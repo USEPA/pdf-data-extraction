@@ -89,7 +89,29 @@ const template = [
          }
       ]
    },
+   {
+      label: 'Annotate',
+      submenu: [
+        {
+          label: 'Auto',
+          click(item, focusedWindow) {
+            if (focusedWindow) {
+              return autoAnnotate(focusedWindow);
+            }
 
+          },
+        }, // “Save File” and “Export HTML” menus are defined here.
+         {
+            label: 'Reset',
+            click(item, focusedWindow) {
+              if (focusedWindow) {
+                //return saveFile(focusedWindow);
+              }
+
+            },
+         }
+      ]
+   },
    {
       label: 'View',
       submenu: [
@@ -265,6 +287,12 @@ const saveFile = (targetWindow) => {
     console.log(response);
     console.log(checkboxChecked);
   });
+}
+
+const autoAnnotate = (targetWindow) => {
+
+  targetWindow.webContents.send('auto-annotate');
+
 }
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

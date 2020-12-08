@@ -1,0 +1,128 @@
+Arguments: 
+  /usr/local/Cellar/node/15.0.1/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js
+
+PATH: 
+  /usr/local/apache-maven-3.3.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  15.0.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/i7j/Dropbox (ORNL)/repos/pdfnottron/package.json: Unexpected token } in JSON at position 442
+      at JSON.parse (<anonymous>)
+      at /usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "pdfnottron",
+    "productName": "ElectronReact",
+    "version": "1.2.0",
+    "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+    "private": true,
+    "devDependencies": {
+      "electron": "^9.1.2",
+      "electron-builder": "^22.8.0",
+      "foreman": "^2.0.0",
+      "jest-puppeteer": "^4.4.0",
+      "puppeteer": "^2.0.0",
+      "typescript": "^3.9.7",
+    },
+    "dependencies": {
+      "@testing-library/jest-dom": "^4.2.4",
+      "@testing-library/react": "^9.3.2",
+      "@testing-library/user-event": "^7.1.2",
+      "prop-types": "^15.7.2",
+      "react": "^16.12.0",
+      "react-dom": "^16.12.0",
+      "react-scripts": "*",
+      "url-search-params": "^1.1.0",
+      "lodash": "^4.17.10",
+      "pdfjs-dist": "2.2.228",
+      "react-pointable": "^1.1.1",
+      "react-rnd": "^7.1.5"
+    },
+    "build": {
+      "productName": "ElectronReact",
+      "appId": "org.develar.ElectronReact",
+      "files": [
+        "dist/**/*",
+        "package.json"
+      ],
+      "dmg": {
+        "contents": [
+          {
+            "x": 130,
+            "y": 220
+          },
+          {
+            "x": 410,
+            "y": 220,
+            "type": "link",
+            "path": "/Applications"
+          }
+        ]
+      },
+      "win": {
+        "target": [
+          "nsis",
+          "msi"
+        ]
+      },
+      "linux": {
+        "target": [
+          "deb",
+          "rpm",
+          "AppImage"
+        ],
+        "category": "Development"
+      },
+      "directories": {
+        "buildResources": "resources",
+        "output": "release"
+      }
+    },
+    "homepage": "./",
+    "main": "public/electron.js",
+    "scripts": {
+      "start": "nf start -p 3000",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject",
+      "electron": "electron .",
+      "electron-start": "node src/electron-wait-react",
+      "react-start": "BROWSER=none react-scripts start",
+      "package": "yarn build && electron-builder build --publish never",
+      "package-all": "yarn build && electron-builder build -mwl",
+      "package-mac": "yarn build && electron-builder build --mac",
+      "package-linux": "yarn build && electron-builder build --linux",
+      "package-win": "yarn build && electron-builder build --win --x64",
+      "postinstall": "electron-builder install-app-deps"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

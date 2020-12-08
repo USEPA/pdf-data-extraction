@@ -10,8 +10,7 @@
     "foreman": "^2.0.0",
     "jest-puppeteer": "^4.4.0",
     "puppeteer": "^2.0.0",
-    "typescript": "^3.9.7",
-    "webpack": "4.42.0"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -20,9 +19,12 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-pdf-highlighter": "https://github.com/jewellbc/react-pdf-highlighter.git",
     "react-scripts": "*",
-    "url-search-params": "^1.1.0"
+    "url-search-params": "^1.1.0",
+    "lodash": "^4.17.10",
+    "pdfjs-dist": "2.2.228",
+    "react-pointable": "^1.1.1",
+    "react-rnd": "^7.1.5"
   },
   "build": {
     "productName": "ElectronReact",

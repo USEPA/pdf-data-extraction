@@ -5,17 +5,15 @@ import React, { Component } from "react";
 
 import URLSearchParams from "url-search-params";
 
-import {
-  PdfLoader,
-  PdfHighlighter,
-  Tip,
-  Highlight,
-  Popup,
-  AreaHighlight
-} from "react-pdf-highlighter";
+import PdfHighlighter from "./components/PdfHighlighter";
+import Tip from "./components/Tip";
+import Highlight from "./components/Highlight";
+import Popup from "./components/Popup";
+import AreaHighlight from "./components/AreaHighlight";
+import PdfLoader from "./components/PdfLoader";
 
 import testHighlights from "./test-highlights.js";
-
+import pdfjs from "pdfjs-dist";
 import Spinner from "./Spinner.js";
 import Sidebar from "./Sidebar.js";
 
@@ -52,6 +50,56 @@ const HighlightPopup = ({ comment }) =>
 
 const DEFAULT_URL = "https://arxiv.org/pdf/1708.08021.pdf";
 
+function gettext(pdfUrl){
+  var pdf = pdfjs.getDocument(pdfUrl);
+  return pdf.then(function(pdf) { // get all pages text
+    var maxPages = pdf.pdfInfo.numPages;
+    var countPromises = []; // collecting all page promises
+    for (var j = 1; j <= maxPages; j++) {
+      var page = pdf.getPage(j);
+
+      var txt = "";
+      countPromises.push(page.then(function(page) { // add page promise
+        var textContent = page.getTextContent();
+        return textContent.then(function(text){ // return content promise
+          return text.items.map(function (s) { return s.str; }).join(''); // value page text
+        });
+      }));
+    }
+    // Wait for all pages and join text
+    return Promise.all(countPromises).then(function (texts) {
+      return texts.join('');
+    });
+  });
+}
+
+/*
+async function getPdfText(data) {
+    let doc = await pdfjs.getDocument({data}).promise;
+    let pageTexts = Array.from({length: doc.numPages}, async (v,i) => {
+        return (await (await doc.getPage(i+1)).getTextContent()).items.map(token => token.str).join('');
+    });
+    return (await Promise.all(pageTexts)).join('');
+}
+*/
+
+function getPdfText(data) {
+    let doc = pdfjs.getDocument({data});
+
+      doc.getPage(1).getTextContent({ normalizeWhitespace: true }).then(function (textContent) {
+        textContent.items.forEach(function (textItem) { alert(textItem) });
+        })
+}
+
+/*
+async function getPdfText(data) {
+    let doc = await pdfjs.getDocument({data}).promise;
+    let pageTexts = Array.from({length: doc.numPages}, async (v,i) => {
+        return (await (await doc.getPage(i+1)).getTextContent()).items.map(token => token.str).join('');
+    });
+    return (await Promise.all(pageTexts)).join('');
+}
+*/
 
 const searchParams = new URLSearchParams(document.location.search);
 let d_url = searchParams.get("url") || DEFAULT_URL;
@@ -215,6 +263,24 @@ class App extends Component<Props, State> {
                     this.openPDF(highlights, file, content);
 
                   });
+                  ipcRenderer.on('auto-annotate', () => {
+                    //filePath = file;
+                    //originalContent = content;
+                    // waiting on gettext to finish completion, or error
+
+                    for (var i = 1; i <= pdfDocument.numPages; i++) {
+                      pdfDocument.getPage(i).then(function (page) {
+                        page.getTextContent({ normalizeWhitespace: true }).then(function (textContent) {
+                            textContent.items.forEach(function (textItem) {
+
+                              alert(textItem.str + " " + textItem.transform.toString());
+                            })
+                        })
+                      })
+                    }
+                    //getPdfText(data);
+
+                  });
                   ipcRenderer.on('save-file', (event, app_path) => {
                     //filePath = file;
                     //originalContent = content;
@@ -226,11 +292,20 @@ class App extends Component<Props, State> {
                     });
 
                   });
+                  if (typeof highlight.comment === 'undefined'){
+                  //the variable is undefined
+                  console.log('undefined oh no');
+                  } else {
+                  //the variable is not undefined
+                  console.log('defined lets do seomthing');
+
                   const component = isTextHighlight ? (
                     <Highlight
                       isScrolledTo={isScrolledTo}
                       position={highlight.position}
                       comment={highlight.comment}
+                      tag={highlight.comment.text}
+
                     />
                   ) : (
                     <AreaHighlight
@@ -255,7 +330,7 @@ class App extends Component<Props, State> {
                       key={index}
                       children={component}
                     />
-                  );
+                  );}
                 }}
                 highlights={highlights}
               />

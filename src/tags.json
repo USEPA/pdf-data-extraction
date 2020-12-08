@@ -1,0 +1,56 @@
+[{
+  "id": "0",
+  "name": "Select Tag:  "
+}, {
+  "id": "TestArticle",
+  "name": "TestArticle"
+}, {
+  "id": "Vehicle",
+  "name": "Vehicle"
+}, {
+  "id": "TestArticleVerification",
+  "name": "TestArticleVerification"
+}, {
+  "id": "GroupName",
+  "name": "GroupName"
+}, {
+  "id": "GroupSize",
+  "name": "GroupSize"
+},{
+  "id": "SampleSize",
+  "name": "SampleSize"
+}, {
+  "id": "Species",
+  "name": "Species"
+}, {
+  "id": "Strain",
+  "name": "Strain"
+}, {
+  "id": "Sex",
+  "name": "Sex"
+}, {
+  "id": "CellLine",
+  "name": "CellLine"
+}, {
+  "id": "Dose",
+  "name": "Dose"
+}, {
+  "id": "DoseUnits",
+  "name": "DoseUnits"
+}, {
+  "id": "DoseFrequency",
+  "name": "DoseFrequency"
+}, {
+  "id": "DoseDuration",
+  "name": "DoseDuration"
+}, {
+  "id": "DoseDurationUnits",
+  "name": "DoseDurationUnits"
+}, {
+  "id": "DoseRoute",
+  "name": "DoseRoute"
+}, {
+  "id": "TimeAtDose",
+  "name": "TimeAtDose"
+}
+]

@@ -26,7 +26,7 @@ const testHighlights = {
         pageNumber: 1
       },
       comment: {
-        text: "Flow or TypeScript?",
+        text: "Vehicle",
       },
       id: "8245652131754351"
     },
@@ -56,7 +56,7 @@ const testHighlights = {
         pageNumber: 1
       },
       comment: {
-        text: "impressive",
+        text: "TestArticle",
         emoji: ""
       },
       id: "812807243318874"
@@ -96,7 +96,7 @@ const testHighlights = {
         pageNumber: 1
       },
       comment: {
-        text: "immersive coding experience!",
+        text: "TestArticleVerification",
         emoji: ""
       },
       id: "2599712881412761"
@@ -159,7 +159,7 @@ const testHighlights = {
         pageNumber: 4
       },
       comment: {
-        text: "",
+        text: "TestArticleVerification",
         emoji: ""
       },
       id: "32839601376722394"
