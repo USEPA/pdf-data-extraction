@@ -246,7 +246,9 @@ class App extends Component<Props, State> {
 
     console.log("Saving highlight", highlight);
     alert(JSON.stringify(highlight.comment.text));
-    highlight.comment.offset = offset;
+    let end = offset + highlight.content.text.length;
+    highlight.comment.begin = offset;
+    highlight.comment.end = end;
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
       url: this.state.url,
