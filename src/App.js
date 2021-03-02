@@ -50,7 +50,7 @@ const HighlightPopup = ({ comment }) =>
 
 const DEFAULT_URL = "https://arxiv.org/pdf/1708.08021.pdf";
 
-function gettext(pdfUrl){
+function gettext(pdfDocument){
   var pdf = pdfjs.getDocument(pdfUrl);
   return pdf.then(function(pdf) { // get all pages text
     var maxPages = pdf.pdfInfo.numPages;
@@ -73,33 +73,23 @@ function gettext(pdfUrl){
   });
 }
 
-/*
-async function getPdfText(data) {
-    let doc = await pdfjs.getDocument({data}).promise;
-    let pageTexts = Array.from({length: doc.numPages}, async (v,i) => {
-        return (await (await doc.getPage(i+1)).getTextContent()).items.map(token => token.str).join('');
-    });
-    return (await Promise.all(pageTexts)).join('');
-}
-*/
+async function getT(pdfDocument) {
+  var plaintext = "";
 
-function getPdfText(data) {
-    let doc = pdfjs.getDocument({data});
-
-      doc.getPage(1).getTextContent({ normalizeWhitespace: true }).then(function (textContent) {
-        textContent.items.forEach(function (textItem) { alert(textItem) });
-        })
+  for (var pn = 1; pn <= pdfDocument.numPages; pn++) {
+    //console.log("hello" + plaintext);
+    var page = await pdfDocument.getPage(pn);
+      var unscaledViewport = page.getViewport({scale:1});
+      const vp = page.getViewport({scale:1});
+      var textContent = await page.getTextContent({ normalizeWhitespace: true });
+          textContent.items.forEach(function (textItem) {
+            plaintext += textItem.str + " ";
+          })
+  }
+  return plaintext;
+  //alert(pn + " : " +plaintext.length);
 }
 
-/*
-async function getPdfText(data) {
-    let doc = await pdfjs.getDocument({data}).promise;
-    let pageTexts = Array.from({length: doc.numPages}, async (v,i) => {
-        return (await (await doc.getPage(i+1)).getTextContent()).items.map(token => token.str).join('');
-    });
-    return (await Promise.all(pageTexts)).join('');
-}
-*/
 
 const searchParams = new URLSearchParams(document.location.search);
 let d_url = searchParams.get("url") || DEFAULT_URL;
@@ -108,7 +98,8 @@ class App extends Component<Props, State> {
   state = {
     highlights: testHighlights[d_url] ? [...testHighlights[d_url]] : [],
     url : d_url,
-    data: ''
+    data: '',
+    text: ''
   };
 
   state: State;
@@ -117,7 +108,8 @@ class App extends Component<Props, State> {
     this.setState({
       highlights: [],
       url: this.state.url,
-      data: this.state.data
+      data: this.state.data,
+      text: this.state.text
     });
   };
 
@@ -129,9 +121,10 @@ class App extends Component<Props, State> {
 
   openPDF = (highlights, url, data) => {
     this.setState({
-      highlights: highlights,
+      highlights: highlights.highlights,
       url: url,
-      data: data
+      data: data,
+      text: ''
     });
   };
 
@@ -159,17 +152,108 @@ class App extends Component<Props, State> {
     return highlights.find(highlight => highlight.id === id);
   }
 
-  addHighlight(highlight: T_NewHighlight) {
+
+  async addHighlight(pdfDocument, highlight: T_NewHighlight) {
     const { highlights } = this.state;
+    var closest = Number.MAX_VALUE;
+    var offset = -1;
+    var curr = 0;
+    var matches = [];
+    var plaintext = "";
+    //const canv = document.getElementById('page1');
+    for (var pn = 1; pn <= pdfDocument.numPages; pn++) {
+      var page = await pdfDocument.getPage(pn);
+        var unscaledViewport = page.getViewport({scale:1});
+        //var scale = Math.min((canv.height / unscaledViewport.height), (canv.width / unscaledViewport.width));
+        const vp = page.getViewport({scale:1.649169176049577});
+
+        var textContent = await page.getTextContent({ normalizeWhitespace: true });
+
+            for(var ti = 0; ti < textContent.items.length; ti++)
+            {
+                var textItem = textContent.items[ti];
+                var textItemText = textItem.str;
+                var highlightText = highlight.content.text;
+                var highlightX = highlight.position.boundingRect.x1;
+                var highlightY = highlight.position.boundingRect.y1;
+                curr = plaintext.length;
+                plaintext += textItem.str + " ";
+
+
+                if(textItemText.includes(highlightText) && highlight.position.pageNumber == pn){
+                  //neat
+                  let x = textItem.transform[4];
+                  let y = textItem.transform[5];
+                  let w = textItem.width;
+                  let h = textItem.height;
+
+                  const [x1, y1, x2, y2] = vp.convertToViewportRectangle([x, y, w + x, h + y]);
+                  var a = x1 - highlightX;
+                  var b = y1 - highlightY;
+                  var distance = Math.sqrt( a*a + b*b );
+                  //curr += textItemText.indexOf(highlightText);
+                  if(distance < closest){
+                    closest = distance;
+                    offset = curr + textItemText.indexOf(highlightText);
+                  }
+                } //if
+                else if(textItemText.length < highlightText.length && highlight.position.pageNumber == pn)
+                {
+                  var iterator = ti + 1;
+                  while(textItemText.length < highlightText.length && iterator < textContent.items.length)
+                  {
+                    textItemText += textContent.items[iterator].str;
+                    iterator++;
+                  } //while
+                  if(textItemText.includes(highlightText)){
+                    let x = textItem.transform[4];
+                    let y = textItem.transform[5];
+                    let w = textItem.width;
+                    let h = textItem.height;
+
+                    const [x1, y1, x2, y2] = vp.convertToViewportRectangle([x, y, w + x, h + y]);
+                    var a = x1 - highlightX;
+                    var b = y1 - highlightY;
+                    var distance = Math.sqrt( a*a + b*b );
+                    //curr += textItemText.indexOf(highlightText);
+                    if(distance < closest){
+                      closest = distance;
+                      offset = curr + textItemText.indexOf(highlightText);
+                    }
+                  } //if
+                } //else if
+
+
+
+                //alert(JSON.stringify(highlight.position.rects) + " matching text" + x1 + " " + y1 + " " + x2 + " " + y2);
+
+
+              //const scale = this.pdfViewer.currentScale;
+
+              //const scale = 809.9999999999999 / 1200;
+
+              //let x2 = (x * scale);
+              //let y2 = ((y + h) * scale);
+              //alert(textItem.str + " " + scale + " " + x1);
+              //alert(textItem.str)
+
+            } //for textitems
+
+
+    } //for pages
+    alert("offset = " + offset);
+
 
     console.log("Saving highlight", highlight);
-
+    alert(JSON.stringify(highlight.comment.text));
+    highlight.comment.offset = offset;
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
       url: this.state.url,
       data: this.state.data
     });
-  }
+    alert(JSON.stringify(highlight));
+  } //end addHighlight
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
     console.log("Updating highlight", highlightId, position, content);
@@ -186,6 +270,15 @@ class App extends Component<Props, State> {
       }),
       url : this.state.url,
       data: this.state.data
+    });
+  }
+
+  updateText(text: string) {
+    this.setState({
+      highlights: this.state.highlights,
+      url : this.state.url,
+      data: this.state.data,
+      text: text
     });
   }
 
@@ -238,7 +331,7 @@ class App extends Component<Props, State> {
                   <Tip
                     onOpen={transformSelection}
                     onConfirm={comment => {
-                      this.addHighlight({ content, position, comment });
+                      this.addHighlight(pdfDocument, { content, position, comment });
 
                       hideTipAndSelection();
                     }}
@@ -257,39 +350,57 @@ class App extends Component<Props, State> {
                     highlight.content && highlight.content.image
                   );
 
-                  ipcRenderer.on('file-opened', (event, file, content, highlights) => {
+                  ipcRenderer.once('file-opened', (event, file, content, highlights) => {
                     //filePath = file;
                     //originalContent = content;
                     this.openPDF(highlights, file, content);
 
                   });
-                  ipcRenderer.on('auto-annotate', () => {
+                  ipcRenderer.once('auto-annotate', (event) => {
                     //filePath = file;
                     //originalContent = content;
                     // waiting on gettext to finish completion, or error
 
-                    for (var i = 1; i <= pdfDocument.numPages; i++) {
-                      pdfDocument.getPage(i).then(function (page) {
-                        page.getTextContent({ normalizeWhitespace: true }).then(function (textContent) {
-                            textContent.items.forEach(function (textItem) {
-
-                              alert(textItem.str + " " + textItem.transform.toString());
-                            })
-                        })
-                      })
-                    }
-                    //getPdfText(data);
+                    //this.updateText(plaintext);
+                    //alert(plaintext);
+                    //alert(getPdfText(data));
 
                   });
-                  ipcRenderer.on('save-file', (event, app_path) => {
+                  ipcRenderer.once('save-file', (event, app_path) => {
                     //filePath = file;
                     //originalContent = content;
-                    const filePath = path.join(app_path, path.basename(this.state.url)  + ".json");
-                    fs.writeFileSync(filePath,
-                                 JSON.stringify(this.state.highlights), function (err) {
-                        if (err) throw err;
+                    let url = this.state.url;
+                    let highlights = this.state.highlights;
+
+                    const pdfData = this.state.data;
+                    pdfjs.getDocument({
+                      data: pdfData,
+                      eventBusDispatchToDOM: true
+                    }).promise.then(pdfD => {
+
+
+                        getT(pdfD).then(function(ptext){
+                        let jsonT = {};
+                        jsonT.text = ptext;
+                        jsonT.highlights = highlights;
+                        //alert("saving");
+                        const filePath = path.join(app_path, path.basename(url)  + ".json");
+                        fs.writeFile(filePath,
+                                     JSON.stringify(jsonT), function (err) {
+                            if (err) throw err;
+
+                        });
+                    //let url = this.state.url;
+                    //getT(pdfDocument).then(function(plaintext){
+                    //const tfilePath = path.join(app_path, path.basename(url)  + ".txt");
+                    //fs.writeFileSync(tfilePath,
+                                 //plaintext, function (err) {
+                      //if (err) throw err;
 
                     });
+                  })
+
+                  //});
 
                   });
                   if (typeof highlight.comment === 'undefined'){

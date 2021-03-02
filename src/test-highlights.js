@@ -27,6 +27,7 @@ const testHighlights = {
       },
       comment: {
         text: "Vehicle",
+        relation: "r1"
       },
       id: "8245652131754351"
     },

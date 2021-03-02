@@ -249,7 +249,8 @@ const openFile = exports.openFile = (targetWindow, file) => {
   //startWatchingFile(targetWindow, file);
   //app.addRecentDocument(file);
   //targetWindow.setRepresentedFilename(file);
-  var highlights = [];
+  var highlights = {};
+  highlights.highlights = [];
   const fullpath = path.join(app.getPath('appData'), 'pdfnottron', path.basename(file) + ".json")
   console.log(fullpath);
 
@@ -261,8 +262,6 @@ const openFile = exports.openFile = (targetWindow, file) => {
   try {
     highlights = JSON.parse(fs.readFileSync(fullpath));
   } catch (err) {
-  // Here you get the error when the file was not found,
-  // but you also get any other
     //console.log(err);
   }
   //console.log(JSON.stringify(highlights));

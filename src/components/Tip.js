@@ -1,83 +1,125 @@
+// @flow
+
 import React, { Component } from "react";
-import "../style/Tip.css";
 import tags from "../tags.json";
+import "../style/Tip.css";
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+type State = {
+  compact: boolean,
+  text: string,
+  emoji: string
+};
 
-class Tip extends Component {
-  constructor(...args) {
-    super(...args);
+type Props = {
+  onConfirm: (comment: { text: string, emoji: string }) => void,
+  onOpen: () => void,
+  onUpdate?: () => void
+};
 
-    _defineProperty(this, "state", {
-      compact: true,
-      text: "",
-      emoji: ""
-    });
-  }
+class Tip extends Component<Props, State> {
+  state: State = {
+    compact: true,
+    text: "",
+    emoji: ""
+  };
 
   // for TipContainer
-  componentDidUpdate(nextProps, nextState) {
-    const {
-      onUpdate
-    } = this.props;
+  componentDidUpdate(nextProps: Props, nextState: State) {
+    const { onUpdate } = this.props;
 
     if (onUpdate && this.state.compact !== nextState.compact) {
       onUpdate();
+
+      let optionList = document.getElementById('tagSelect').options;
+
+
+      tags.forEach(option =>
+        optionList.add(
+          new Option(option.name, option.id)
+        )
+      );
+
+
+      var btn = document.getElementById('btnAdd');
+      btn.onclick = function(){
+
+          var tb = document.getElementById('optionTextBox'), val = tb.value;
+          if(val.length){
+              alert(val);
+              var sel = document.getElementById('sel');
+              var opt = document.createElement('option');
+              opt.value = val;
+              opt.innerHTML = val;
+              sel.appendChild(opt);
+              tb.value = '';
+          }
+      };
     }
   }
 
-
-
   render() {
-    const {
-      onConfirm,
-      onOpen
-    } = this.props;
-    const {
-      compact,
-      text,
-      emoji
-    } = this.state;
-    var i = 0;
-    let tagsList = tags.map(function (tag) {
-        return React.createElement(
-            'option',
-            { value: tag.name, key: tag.id},
-            tag.name
-        );
-    });
-    return React.createElement("div", {
-      className: "Tip"
-    }, compact ? React.createElement("div", {
-      className: "Tip__compact",
-      onClick: () => {
-        onOpen();
-        this.setState({
-          compact: false
-        });
-      }
-    }, "Add highlight") : React.createElement("form", {
-      className: "Tip__card",
-      onSubmit: event => {
-        event.preventDefault();
-        onConfirm({
-          text,
-          emoji
-        });
-      }
-    }, React.createElement("div", null, React.createElement("select", {
-      width: "100%",
-      onChange: event => this.setState({
-        text: event.target.value
-      }),
+    const { onConfirm, onOpen } = this.props;
+    const { compact, text, emoji } = this.state;
 
-    },tagsList ))
-    , React.createElement("div", null, React.createElement("input", {
-      type: "submit",
-      value: "Save"
-    }))));
+    return (
+
+      <div className="Tip">
+        {compact ? (
+          <div
+            className="Tip__compact"
+            onClick={() => {
+              onOpen();
+              this.setState({ compact: false });
+            }}
+          >
+            Add Annotation
+          </div>
+        ) : (
+          <form
+            className="Tip__card"
+            onSubmit={event => {
+              event.preventDefault();
+              onConfirm({ text, emoji });
+            }}
+          >
+            <div>
+              <div>
+              <select
+                id = "tagSelect"
+                width="100%"
+                placeholder="Your comment"
+                autoFocus
+                value={text}
+                onChange={event => this.setState({ text: event.target.value })}
+                ref={node => {
+                  if (node) {
+                    node.focus();
+                  }
+                }}
+              />
+              </div>
+              <div>
+              <select id="sel" name="sel" onChange={event => this.setState({ emoji: event.target.value })}>
+                  <option value='r1'>r1</option>
+                  <option value='r2'>r2</option>
+              </select>
+              <input type='text' name='option' id='optionTextBox' />
+              <button id='btnAdd'>Add Option</button>
+
+            </div>
+            </div>
+            <div>
+              <input type="submit" value="Save" />
+            </div>
+
+          </form>
+        )}
+
+      </div>
+
+    );
+
   }
-
 }
 
 export default Tip;

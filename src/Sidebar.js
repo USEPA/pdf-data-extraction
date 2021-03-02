@@ -33,6 +33,7 @@ function Sidebar({ highlights, resetHighlights, removeHighlight }: Props) {
           >
             <div>
               <strong>{highlight.comment.text}</strong>
+              <div><strong>{highlight.comment.emoji}</strong></div>
               {highlight.content.text ? (
                 <blockquote style={{ marginTop: "0.5rem" }}>
                   {`${highlight.content.text.slice(0, 90).trim()}…`}

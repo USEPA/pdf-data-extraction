@@ -76,12 +76,15 @@ class PdfHighlighter extends PureComponent {
     });
 
     _defineProperty(this, "onDocumentReady", () => {
+      this.getT();
+
       const {
         scrollRef
       } = this.props;
       this.viewer.currentScaleValue = "auto";
       scrollRef(this.scrollTo);
     });
+
 
     _defineProperty(this, "onSelectionChange", () => {
       const selection = window.getSelection();
@@ -370,7 +373,45 @@ class PdfHighlighter extends PureComponent {
   toggleTextSelection(flag) {
     this.viewer.viewer.classList.toggle("PdfHighlighter--disable-selection", flag);
   }
+  async getT() {
+    const {
+      pdfDocument
+    } = this.props;
 
+    var plaintext = "";
+    //const canv = document.getElementById('page1');
+    for (var pn = 1; pn <= pdfDocument.numPages; pn++) {
+      console.log("hello" + plaintext);
+      var page = await pdfDocument.getPage(pn);
+        var unscaledViewport = page.getViewport({scale:1});
+        //var scale = Math.min((canv.height / unscaledViewport.height), (canv.width / unscaledViewport.width));
+        const vp = page.getViewport({scale:1.649169176049577});
+        var textContent = await page.getTextContent({ normalizeWhitespace: true });
+            textContent.items.forEach(function (textItem) {
+              let tolerance = 10;
+              let x = textItem.transform[4] - tolerance/2;
+              let y = textItem.transform[5] - tolerance/2;
+              let w = textItem.width + tolerance;
+              let h = textItem.height + tolerance;
+
+              //const scale = this.pdfViewer.currentScale;
+
+              //const scale = 809.9999999999999 / 1200;
+
+              const [x1, y1, x2, y2] = vp.convertToViewportRectangle([x, y, w + x, h + y]);
+
+              //let x2 = (x * scale);
+              //let y2 = ((y + h) * scale);
+              //alert(textItem.str + " " + scale + " " + x1);
+              //alert(textItem.str)
+              plaintext += textItem.str;
+//console.log(pn + " " +plaintext);
+            })
+
+
+    }
+    //alert(pn + " : " +plaintext.length);
+  }
   render() {
     const {
       onSelectionFinished,
