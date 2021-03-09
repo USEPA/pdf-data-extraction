@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from "react";
-import tags from "../tags.json";
+//import tags from "../tags.json";
 import "../style/Tip.css";
 
 type State = {
@@ -26,14 +26,14 @@ class Tip extends Component<Props, State> {
   // for TipContainer
   componentDidUpdate(nextProps: Props, nextState: State) {
     const { onUpdate } = this.props;
-
+    //alert(this.props.tags);
     if (onUpdate && this.state.compact !== nextState.compact) {
       onUpdate();
 
       let optionList = document.getElementById('tagSelect').options;
 
 
-      tags.forEach(option =>
+      this.props.tags.forEach(option =>
         optionList.add(
           new Option(option.name, option.id)
         )

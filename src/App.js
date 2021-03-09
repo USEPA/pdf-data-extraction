@@ -12,6 +12,7 @@ import Popup from "./components/Popup";
 import AreaHighlight from "./components/AreaHighlight";
 import PdfLoader from "./components/PdfLoader";
 
+import defaultTags from "./tags.json";
 import testHighlights from "./test-highlights.js";
 import pdfjs from "pdfjs-dist";
 import Spinner from "./Spinner.js";
@@ -99,7 +100,8 @@ class App extends Component<Props, State> {
     highlights: testHighlights[d_url] ? [...testHighlights[d_url]] : [],
     url : d_url,
     data: '',
-    text: ''
+    text: '',
+    tags: defaultTags
   };
 
   state: State;
@@ -109,7 +111,8 @@ class App extends Component<Props, State> {
       highlights: [],
       url: this.state.url,
       data: this.state.data,
-      text: this.state.text
+      text: this.state.text,
+      tags: this.state.tags
     });
   };
 
@@ -124,7 +127,19 @@ class App extends Component<Props, State> {
       highlights: highlights.highlights,
       url: url,
       data: data,
-      text: ''
+      text: '',
+      tags: defaultTags
+    });
+  };
+
+  openSchema = (data) => {
+    //alert(JSON.stringify(data));
+    this.setState({
+      highlights: this.state.highlights,
+      url: this.state.url,
+      data: this.state.data,
+      text: this.state.text,
+      tags: data
     });
   };
 
@@ -241,18 +256,19 @@ class App extends Component<Props, State> {
 
 
     } //for pages
-    alert("offset = " + offset);
+    //alert("offset = " + offset);
 
 
     console.log("Saving highlight", highlight);
-    alert(JSON.stringify(highlight.comment.text));
+    //alert(JSON.stringify(highlight.comment.text));
     let end = offset + highlight.content.text.length;
     highlight.comment.begin = offset;
     highlight.comment.end = end;
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
       url: this.state.url,
-      data: this.state.data
+      data: this.state.data,
+      tags: this.state.tags
     });
     alert(JSON.stringify(highlight));
   } //end addHighlight
@@ -271,7 +287,8 @@ class App extends Component<Props, State> {
           : h;
       }),
       url : this.state.url,
-      data: this.state.data
+      data: this.state.data,
+      tags: this.state.tags
     });
   }
 
@@ -280,7 +297,8 @@ class App extends Component<Props, State> {
       highlights: this.state.highlights,
       url : this.state.url,
       data: this.state.data,
-      text: text
+      text: text,
+      tags: this.state.tags
     });
   }
 
@@ -323,7 +341,6 @@ class App extends Component<Props, State> {
                   this.scrollToHighlightFromHash();
                 }}
 
-
                 onSelectionFinished={(
                   position,
                   content,
@@ -331,6 +348,7 @@ class App extends Component<Props, State> {
                   transformSelection
                 ) => (
                   <Tip
+                    tags={this.state.tags}
                     onOpen={transformSelection}
                     onConfirm={comment => {
                       this.addHighlight(pdfDocument, { content, position, comment });
@@ -356,6 +374,12 @@ class App extends Component<Props, State> {
                     //filePath = file;
                     //originalContent = content;
                     this.openPDF(highlights, file, content);
+
+                  });
+                  ipcRenderer.once('schema-file-opened', (event, content) => {
+                    //filePath = file;
+                    //originalContent = content;
+                    this.openSchema(content);
 
                   });
                   ipcRenderer.once('auto-annotate', (event) => {

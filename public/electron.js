@@ -41,7 +41,7 @@ const template = [
      label: 'File',
      submenu: [
        {
-         label: 'Open File',
+         label: 'Load PDF',
          accelerator: 'CommandOrControl+O',
          click(item, focusedWindow) {
            if (focusedWindow) {
@@ -56,14 +56,28 @@ const template = [
          },
        }, // “Save File” and “Export HTML” menus are defined here.
         {
-           label: 'Save',
+           label: 'Save Annotations',
            click(item, focusedWindow) {
              if (focusedWindow) {
                return saveFile(focusedWindow);
              }
 
            },
-        }
+        },
+        {
+          label: 'Load Schema',
+          click(item, focusedWindow) {
+            if (focusedWindow) {
+              return getSchemaFileFromUser(focusedWindow);
+            }
+
+            const newWindow = createWindow();
+
+            newWindow.on('show', () => {
+              getSchemaFileFromUser(newWindow);
+            });
+          },
+        } // “Save File” and “Export HTML” menus are defined here.
      ]
   },
    {
@@ -241,6 +255,44 @@ async function getFileFromUser(targetWindow) {
   if (files) {
     openFile(targetWindow, files.filePaths[0]);
   }
+};
+
+async function getSchemaFileFromUser(targetWindow) {
+  const filesAsync = dialog.showOpenDialog(targetWindow, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'JSON Documents', extensions: ['json'] }
+    ]
+  });
+  const files = await filesAsync;
+  //console.log(files.filePaths);
+  if (files) {
+    openSchemaFile(targetWindow, files.filePaths[0]);
+  }
+};
+
+const openSchemaFile = exports.openSchemaFile = (targetWindow, file) => {
+
+  //const content = fs.readFileSync(file);
+  //startWatchingFile(targetWindow, file);
+  //app.addRecentDocument(file);
+  //targetWindow.setRepresentedFilename(file);
+  var content = {};
+
+
+  //const exists = fs.existsSync(fullpath);
+  //if (exists) {
+  //  console.log("exists")
+  //  highlights = fs.readFileSync(fullpath, 'utf-8');
+  //}
+  try {
+    content = JSON.parse(fs.readFileSync(file));
+  } catch (err) {
+    //console.log(err);
+  }
+  //console.log(JSON.stringify(highlights));
+  targetWindow.webContents.send('schema-file-opened', content);
+
 };
 
 const openFile = exports.openFile = (targetWindow, file) => {
