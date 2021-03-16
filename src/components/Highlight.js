@@ -24,7 +24,7 @@ class Highlight extends Component {
         top: boundingRect.top
       }
     }, comment.emoji) : null, React.createElement("div", {
-      className: "Highlight__parts"
+      className: `Highlight__parts`
     },
 
      rects.map((rect, index) => React.createElement("div", {
@@ -33,8 +33,10 @@ class Highlight extends Component {
       onClick: onClick,
       key: index,
       style: rect,
-      className: `Highlight__${comment.text}`
-    }))));
+      className: `Highlight__part`,
+      //background: "black",
+      id: comment.text}
+    ))));
   }
 
 }

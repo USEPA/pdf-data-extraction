@@ -90,7 +90,7 @@ class Tip extends Component<Props, State> {
                 placeholder="Your comment"
                 autoFocus
                 value={text}
-                onChange={event => this.setState({ text: event.target.value })}
+                onChange={event => this.setState({ text: event.target.value})}
                 ref={node => {
                   if (node) {
                     node.focus();

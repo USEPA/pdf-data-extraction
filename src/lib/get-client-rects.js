@@ -8,7 +8,8 @@ const getClientRects = (range, containerEl, shouldOptimize = true) => {
       top: rect.top + containerEl.scrollTop - offset.top,
       left: rect.left + containerEl.scrollLeft - offset.left,
       width: rect.width,
-      height: rect.height
+      height: rect.height,
+      background: "pink"
     };
   });
   return shouldOptimize ? optimizeClientRects(rects) : rects;

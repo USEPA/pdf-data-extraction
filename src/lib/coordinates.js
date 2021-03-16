@@ -48,6 +48,7 @@ export const scaledToViewport = (scaled, viewport, usePdfCoordinates = false) =>
     left: x1,
     top: y1,
     width: x2 - x1,
-    height: y2 - y1
+    height: y2 - y1,
+    background: scaled.background
   };
 };

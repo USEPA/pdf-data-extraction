@@ -17,6 +17,7 @@ import testHighlights from "./test-highlights.js";
 import pdfjs from "pdfjs-dist";
 import Spinner from "./Spinner.js";
 import Sidebar from "./Sidebar.js";
+import $ from "jquery"
 
 import type {
   T_Highlight,
@@ -130,17 +131,35 @@ class App extends Component<Props, State> {
       text: '',
       tags: defaultTags
     });
+    defaultTags.forEach(tag => {
+        let tagID = `.Highlight__` + tag.name;
+        //document.getElementById(tagID).style.color=tag.color;
+      //  $(tagID).css({"background": tag.color})
+      //  $(tagID).css({"position": "absolute"});
+      });
   };
 
   openSchema = (data) => {
     //alert(JSON.stringify(data));
+    var tempHighlights = this.state.highlights;
+    const currentTags = data;
+    tempHighlights.forEach(hlight => {
+        data.forEach(tag => {
+            if(tag.name == hlight.comment.text){
+              hlight.position.rects.forEach(rect => {
+                  rect.background = tag.color;
+                })
+            }
+          })
+      })
     this.setState({
-      highlights: this.state.highlights,
+      highlights: tempHighlights,
       url: this.state.url,
       data: this.state.data,
       text: this.state.text,
       tags: data
     });
+
   };
 
   scrollViewerTo = (highlight: any) => {};
@@ -159,6 +178,15 @@ class App extends Component<Props, State> {
       this.scrollToHighlightFromHash,
       false
     );
+    defaultTags.forEach(tag => {
+        if(tag.id != 0)
+        {
+        let tagID = `.Highlight__` + tag.name;
+        //document.getElementById(tagID).style.color=tag.color;
+        $(tagID).css({"background": tag.color})
+        $(tagID).css({"position": "absolute"});
+      }
+      });
   }
 
   getHighlightById(id: string) {
@@ -253,7 +281,15 @@ class App extends Component<Props, State> {
               //alert(textItem.str)
 
             } //for textitems
-
+            this.state.tags.forEach(tag => {
+                if(tag.id != 0){
+                  console.log(tag.name + " " + tag.color);
+                let tagID = `.Highlight__` + tag.name;
+                console.log(tagID);
+                //document.getElementById(tagID).style.color=tag.color;
+                //$(tagID).css({"background": tag.color});
+              }
+              });
 
     } //for pages
     //alert("offset = " + offset);
@@ -264,6 +300,21 @@ class App extends Component<Props, State> {
     let end = offset + highlight.content.text.length;
     highlight.comment.begin = offset;
     highlight.comment.end = end;
+    var bg_index = -1;
+    const currentTags = this.state.tags;
+    const defaultBGColor = "yellow";
+    highlight.position.rects.forEach(rect => {
+        rect.backgound = defaultBGColor;
+      })
+    currentTags.forEach((tag, index) => {
+      if(tag.name == highlight.comment.text)
+      {
+        highlight.position.rects.forEach(rect => {
+            rect.background = tag.color;
+          })
+      }
+    });
+
     this.setState({
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
       url: this.state.url,

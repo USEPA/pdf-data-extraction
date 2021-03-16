@@ -16,15 +16,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.10",
+    "pdfjs-dist": "2.2.228",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "*",
-    "url-search-params": "^1.1.0",
-    "lodash": "^4.17.10",
-    "pdfjs-dist": "2.2.228",
     "react-pointable": "^1.1.1",
-    "react-rnd": "^7.1.5"
+    "react-rnd": "^7.1.5",
+    "react-scripts": "*",
+    "url-search-params": "^1.1.0"
   },
   "build": {
     "productName": "ElectronReact",

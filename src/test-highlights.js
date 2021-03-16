@@ -20,7 +20,8 @@ const testHighlights = {
             x2: 574.372314453125,
             y2: 165.140625,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "red"
           }
         ],
         pageNumber: 1
@@ -51,7 +52,8 @@ const testHighlights = {
             x2: 658.6533203125,
             y2: 363.390625,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "blue"
           }
         ],
         pageNumber: 1
@@ -83,7 +85,8 @@ const testHighlights = {
             x2: 733.61328125,
             y2: 686.21875,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "blue"
           },
           {
             x1: 76.375,
@@ -91,7 +94,8 @@ const testHighlights = {
             x2: 671.4954833984375,
             y2: 706.140625,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "blue"
           }
         ],
         pageNumber: 1
@@ -114,7 +118,8 @@ const testHighlights = {
           x2: 744.8125,
           y2: 261,
           width: 809.9999999999999,
-          height: 1200
+          height: 1200,
+          background: "green"
         },
         rects: [],
         pageNumber: 3
@@ -146,7 +151,8 @@ const testHighlights = {
             x2: 733.607421875,
             y2: 1059.3125,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "green"
           },
           {
             x1: 75.953125,
@@ -154,7 +160,8 @@ const testHighlights = {
             x2: 206.6217041015625,
             y2: 1079.234375,
             width: 809.9999999999999,
-            height: 1200
+            height: 1200,
+            background: "green"
           }
         ],
         pageNumber: 4
@@ -177,7 +184,8 @@ const testHighlights = {
           x2: 406.8125,
           y2: 417,
           width: 809.9999999999999,
-          height: 1200
+          height: 1200,
+          background: "green"
         },
         rects: [],
         pageNumber: 24
