@@ -180,7 +180,7 @@ const template = [
 
 //replicate default macOS application menu
 if (process.platform === 'darwin') {
-  const name = 'PDFnotTron';
+  const name = 'EPAAT';
   template.unshift({
     label: name,
     submenu: [
@@ -303,7 +303,7 @@ const openFile = exports.openFile = (targetWindow, file) => {
   //targetWindow.setRepresentedFilename(file);
   var highlights = {};
   highlights.highlights = [];
-  const fullpath = path.join(app.getPath('appData'), 'pdfnottron', path.basename(file) + ".json")
+  const fullpath = path.join(app.getPath('appData'), 'EPAAT', path.basename(file) + ".json")
   console.log(fullpath);
 
   //const exists = fs.existsSync(fullpath);
@@ -322,7 +322,7 @@ const openFile = exports.openFile = (targetWindow, file) => {
 };
 
 const saveFile = (targetWindow) => {
-  const app_path = path.join(app.getPath('appData'), 'pdfnottron');
+  const app_path = path.join(app.getPath('appData'), 'EPAAT');
   targetWindow.webContents.send('save-file', app_path);
 
   const options = {

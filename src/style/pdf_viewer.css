@@ -16,7 +16,7 @@
 html
   body
   .textLayer
-  > div:not(.PdfHighlighter__highlight-layer):not(.Highlight):not(.Highlight-emoji) {
+  > div:not(.PdfHighlighter__highlight-layer):not(.Highlight):not(.Highlight-relationship) {
   opacity: 1;
   mix-blend-mode: multiply;
 }

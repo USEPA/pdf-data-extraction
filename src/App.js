@@ -18,6 +18,7 @@ import pdfjs from "pdfjs-dist";
 import Spinner from "./Spinner.js";
 import Sidebar from "./Sidebar.js";
 import $ from "jquery"
+//require("jQuery");
 
 import type {
   T_Highlight,
@@ -25,6 +26,9 @@ import type {
 } from "react-pdf-highlighter/src/types";
 
 import "./style/App.css";
+//require("popper");
+require("bootstrap");
+import "./lib/bootstrap/css/bootstrap.min.css"
 
 type T_ManuscriptHighlight = T_Highlight;
 
@@ -102,7 +106,8 @@ class App extends Component<Props, State> {
     url : d_url,
     data: '',
     text: '',
-    tags: defaultTags
+    tags: defaultTags,
+    relationships: []
   };
 
   state: State;
@@ -113,7 +118,8 @@ class App extends Component<Props, State> {
       url: this.state.url,
       data: this.state.data,
       text: this.state.text,
-      tags: this.state.tags
+      tags: this.state.tags,
+      relationships: this.state.relationships
     });
   };
 
@@ -122,7 +128,11 @@ class App extends Component<Props, State> {
       return highlight_id !== highlight.id
       })});
   }
-
+  editHighlight = (highlight_id) => {
+    this.setState({highlights: this.state.highlights.filter(function(highlight){
+      return highlight_id !== highlight.id
+      })});
+  }
   openPDF = (highlights, url, data) => {
     this.setState({
       highlights: highlights.highlights,
@@ -157,7 +167,8 @@ class App extends Component<Props, State> {
       url: this.state.url,
       data: this.state.data,
       text: this.state.text,
-      tags: data
+      tags: data,
+      relationships: this.state.relationships
     });
 
   };
@@ -319,7 +330,8 @@ class App extends Component<Props, State> {
       highlights: [{ ...highlight, id: getNextId() }, ...highlights],
       url: this.state.url,
       data: this.state.data,
-      tags: this.state.tags
+      tags: this.state.tags,
+      relationships: this.state.relationships
     });
     alert(JSON.stringify(highlight));
   } //end addHighlight
@@ -339,7 +351,24 @@ class App extends Component<Props, State> {
       }),
       url : this.state.url,
       data: this.state.data,
-      tags: this.state.tags
+      tags: this.state.tags,
+      relationships: this.state.relationships
+    });
+  }
+
+  addRelationship = (type: string, head: string, nodes: []) => {
+    var relation = {};
+    relation.type = type;
+    relation.head = head;
+    relation.nodes = nodes;
+    this.state.relationships.push(relation);
+
+    this.setState({
+      highlights: this.state.highlights,
+      url : this.state.url,
+      data: this.state.data,
+      tags: this.state.tags,
+      relationships: this.state.relationships
     });
   }
 
@@ -349,7 +378,8 @@ class App extends Component<Props, State> {
       url : this.state.url,
       data: this.state.data,
       text: text,
-      tags: this.state.tags
+      tags: this.state.tags,
+      relationships: this.state.relationships
     });
   }
 
@@ -358,6 +388,7 @@ class App extends Component<Props, State> {
     const { highlights } = this.state;
     const { url } = this.state;
     const { data } = this.state;
+    const { relationships } = this.state;
     const electron = window.require('electron');
     const ipcRenderer  = electron.ipcRenderer;
     const app = electron.app;
@@ -368,8 +399,10 @@ class App extends Component<Props, State> {
       <div className="App" style={{ display: "flex", height: "100vh" }}>
         <Sidebar
           highlights={highlights}
+          relationships={relationships}
           resetHighlights={this.resetHighlights}
           removeHighlight={this.removeHighlight}
+          addRelationship={this.addRelationship}
         />
         <div
           style={{

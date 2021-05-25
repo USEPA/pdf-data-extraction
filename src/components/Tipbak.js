@@ -11,7 +11,7 @@ class Tip extends Component {
     _defineProperty(this, "state", {
       compact: true,
       text: "",
-      emoji: ""
+      relationship: ""
     });
   }
 
@@ -36,7 +36,7 @@ class Tip extends Component {
     const {
       compact,
       text,
-      emoji
+      relationship
     } = this.state;
     var i = 0;
     let tagsList = tags.map(function (tag) {
@@ -62,7 +62,7 @@ class Tip extends Component {
         event.preventDefault();
         onConfirm({
           text,
-          emoji
+          relationship
         });
       }
     }, React.createElement("div", null, React.createElement("select", {

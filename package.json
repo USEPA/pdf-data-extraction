@@ -1,5 +1,5 @@
 {
-  "name": "pdfnottron",
+  "name": "EPAAT",
   "productName": "ElectronReact",
   "version": "1.2.0",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
@@ -13,12 +13,18 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "bootstrap": "^4.6.0",
+    "bootstrap-select": "^1.13.18",
+    "http2": "^3.3.7",
     "jquery": "^3.6.0",
     "lodash": "^4.17.10",
     "pdfjs-dist": "2.2.228",
+    "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

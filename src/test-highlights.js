@@ -60,7 +60,7 @@ const testHighlights = {
       },
       comment: {
         text: "TestArticle",
-        emoji: ""
+        relationship: ""
       },
       id: "812807243318874"
     },
@@ -102,7 +102,7 @@ const testHighlights = {
       },
       comment: {
         text: "TestArticleVerification",
-        emoji: ""
+        relationship: ""
       },
       id: "2599712881412761"
     },
@@ -126,7 +126,7 @@ const testHighlights = {
       },
       comment: {
         text: "lisp!",
-        emoji: "😱"
+        relationship: "😱"
       },
       id: "9120567402727258"
     },
@@ -168,7 +168,7 @@ const testHighlights = {
       },
       comment: {
         text: "TestArticleVerification",
-        emoji: ""
+        relationship: ""
       },
       id: "32839601376722394"
     },
@@ -192,7 +192,7 @@ const testHighlights = {
       },
       comment: {
         text: "",
-        emoji: ""
+        relationship: ""
       },
       id: "46570518065661615"
     }
