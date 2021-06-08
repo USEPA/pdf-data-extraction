@@ -303,6 +303,7 @@ const openFile = exports.openFile = (targetWindow, file) => {
   //targetWindow.setRepresentedFilename(file);
   var highlights = {};
   highlights.highlights = [];
+  highlights.relationships = [];
   const fullpath = path.join(app.getPath('appData'), 'EPAAT', path.basename(file) + ".json")
   console.log(fullpath);
 

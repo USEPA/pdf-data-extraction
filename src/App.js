@@ -26,7 +26,7 @@ import type {
 } from "react-pdf-highlighter/src/types";
 
 import "./style/App.css";
-//require("popper");
+require("popper.js");
 require("bootstrap");
 import "./lib/bootstrap/css/bootstrap.min.css"
 
@@ -134,12 +134,15 @@ class App extends Component<Props, State> {
       })});
   }
   openPDF = (highlights, url, data) => {
+    let schema = defaultTags;
+    if(typeof highlights.schema != "undefined") schema = highlights.schema;
     this.setState({
       highlights: highlights.highlights,
       url: url,
       data: data,
       text: '',
-      tags: defaultTags
+      tags: schema,
+      relationships: highlights.relationships
     });
     defaultTags.forEach(tag => {
         let tagID = `.Highlight__` + tag.name;
@@ -454,19 +457,19 @@ class App extends Component<Props, State> {
                     highlight.content && highlight.content.image
                   );
 
-                  ipcRenderer.once('file-opened', (event, file, content, highlights) => {
+                  ipcRenderer.on('file-opened', (event, file, content, highlights) => {
                     //filePath = file;
                     //originalContent = content;
                     this.openPDF(highlights, file, content);
 
                   });
-                  ipcRenderer.once('schema-file-opened', (event, content) => {
+                  ipcRenderer.on('schema-file-opened', (event, content) => {
                     //filePath = file;
                     //originalContent = content;
                     this.openSchema(content);
 
                   });
-                  ipcRenderer.once('auto-annotate', (event) => {
+                  ipcRenderer.on('auto-annotate', (event) => {
                     //filePath = file;
                     //originalContent = content;
                     // waiting on gettext to finish completion, or error
@@ -476,11 +479,13 @@ class App extends Component<Props, State> {
                     //alert(getPdfText(data));
 
                   });
-                  ipcRenderer.once('save-file', (event, app_path) => {
+                  ipcRenderer.on('save-file', (event, app_path) => {
                     //filePath = file;
                     //originalContent = content;
                     let url = this.state.url;
                     let highlights = this.state.highlights;
+                    let relationships = this.state.relationships;
+                    let schema = this.state.tags;
 
                     const pdfData = this.state.data;
                     pdfjs.getDocument({
@@ -492,6 +497,8 @@ class App extends Component<Props, State> {
                         getT(pdfD).then(function(ptext){
                         let jsonT = {};
                         jsonT.text = ptext;
+                        jsonT.relationships = relationships;
+                        jsonT.schema = schema;
                         jsonT.highlights = highlights;
                         //alert("saving");
                         const filePath = path.join(app_path, path.basename(url)  + ".json");

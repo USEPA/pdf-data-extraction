@@ -10,7 +10,11 @@ type T_ManuscriptHighlight = T_Highlight;
 
 const jQuery = require('jquery');
 window.jQuery = jQuery;
+require("popper.js");
+require("bootstrap");
+import "./lib/bootstrap/css/bootstrap.min.css"
 import ('bootstrap-select/dist/css/bootstrap-select.min.css');
+import "./style/custom.css"
 require('bootstrap-select');
 
 type Props = {
@@ -55,7 +59,7 @@ function Sidebar({ highlights, relationships, resetHighlights, removeHighlight, 
               >
                 <div>
                 <div style={{ padding: "1rem" }}>
-                  <button onClick={(e) => removeHighlight(highlight.id)}><i class="gg-trash"></i></button>
+                  <button style={{margin:"10px"}} onClick={(e) => removeHighlight(highlight.id)}><i class="gg-trash"></i></button>
                   <button onClick={(e) => editHighlight(highlight.id)}><i class="gg-pen"></i></button>
                 </div>
                   <strong>{highlight.comment.text}</strong>
@@ -105,13 +109,14 @@ function Sidebar({ highlights, relationships, resetHighlights, removeHighlight, 
                 <li>
                 <strong>{relation.type}</strong>
                 {relation.head ? (
+
                   <blockquote style={{ marginTop: "0.5rem" }}>
-                    {`${relation.head.slice(0, 90).trim()}…`}
+                    {`${highlights.filter(function(highlight){return relation.head == highlight.id})[0].content.text}`}
                   </blockquote>
                 ) : null}
                 {relation.nodes.map((rel, i) => (
                   <blockquote style={{ marginTop: "0.5rem" }}>
-                    {`${rel.trim()}…`}
+                    {`${highlights.filter(function(highlight){return rel == highlight.id})[0].content.text}`}
                   </blockquote>
                   ))}
                 </li>
