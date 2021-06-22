@@ -1215,6 +1215,11 @@
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
 
+"@eastdesire/jscolor@^2.4.5":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@eastdesire/jscolor/-/jscolor-2.4.5.tgz#df46f049fb2b86a0cb450401ed6f7e46cd96fc43"
+  integrity sha512-LDCEGN7qKKO3tq6yYtx6cbz/tQlr9LqKNSFaG2GIIn03y67ot3doucpDGoQjCwXG2xUB4pDXRuH2lobjjxhtJA==
+
 "@electron/get@^1.0.1":
   version "1.12.4"
   resolved "https://registry.yarnpkg.com/@electron/get/-/get-1.12.4.tgz#a5971113fc1bf8fa12a8789dc20152a7359f06ab"
@@ -4271,6 +4276,11 @@ colorette@^1.2.1, colorette@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
   integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
+
+colorpicker@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/colorpicker/-/colorpicker-2.0.0.tgz#df0a9e4fa77e9091b83a40f25fcf8e3b8bc3f899"
+  integrity sha1-3wqeT6d+kJG4OkDyX8+OO4vD+Jk=
 
 colors@1.0.3:
   version "1.0.3"
@@ -8590,6 +8600,11 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
+
+jscolor@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/jscolor/-/jscolor-0.3.0.tgz#69da99a66cdf9c338ea17ec0afe0a8da20a7e201"
+  integrity sha512-b+lnArwwIknmcAvswfL9vDeaQP/TDNWafaWD8zl6itpBUnO3PgQTjkl0zVvkoI116+au+njPFVlhWpywE7mA8Q==
 
 jsdom@^16.4.0:
   version "16.5.3"

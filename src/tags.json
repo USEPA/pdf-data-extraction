@@ -1,73 +1,70 @@
 [{
-  "id": "0",
-  "name": "Select Tag:  "
-},{
   "id": "TestArticle",
   "name": "TestArticle",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "Vehicle",
   "name": "Vehicle",
-  "color": "red"
+  "color": "#FBFF17"
 }, {
   "id": "TestArticleVerification",
   "name": "TestArticleVerification",
-  "color": "green"
+  "color": "#FBFF17"
 }, {
   "id": "GroupName",
   "name": "GroupName",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "GroupSize",
   "name": "GroupSize",
-  "color": "blue"
+  "color": "#FBFF17"
 },{
   "id": "SampleSize",
   "name": "SampleSize",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "Species",
   "name": "Species",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "Strain",
   "name": "Strain",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "Sex",
   "name": "Sex",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "CellLine",
   "name": "CellLine",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "Dose",
   "name": "Dose",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "DoseUnits",
   "name": "DoseUnits",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "DoseFrequency",
   "name": "DoseFrequency",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "DoseDuration",
   "name": "DoseDuration",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "DoseDurationUnits",
   "name": "DoseDurationUnits",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "DoseRoute",
   "name": "DoseRoute",
-  "color": "blue"
+  "color": "#FBFF17"
 }, {
   "id": "TimeAtDose",
   "name": "TimeAtDose",
-  "color": "blue"
+  "color": "#FBFF17"
 }
 ]

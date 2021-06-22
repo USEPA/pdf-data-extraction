@@ -13,14 +13,17 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@eastdesire/jscolor": "^2.4.5",
     "@popperjs/core": "^2.9.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.6.0",
     "bootstrap-select": "^1.13.18",
+    "colorpicker": "^2.0.0",
     "http2": "^3.3.7",
     "jquery": "^3.6.0",
+    "jscolor": "^0.3.0",
     "lodash": "^4.17.10",
     "pdfjs-dist": "2.2.228",
     "popper": "^1.0.1",

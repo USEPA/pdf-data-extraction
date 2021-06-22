@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/15.0.1/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js add httpd2
+  /usr/local/Cellar/node/15.0.1/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js add jsColorPicker
 
 PATH: 
   /usr/local/apache-maven-3.3.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/httpd2: Not found
+  Error: https://registry.yarnpkg.com/jsColorPicker: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:66988:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:140749:22)
       at Request.emit (node:events:327:20)
@@ -48,10 +48,12 @@ npm manifest:
       "@testing-library/user-event": "^7.1.2",
       "bootstrap": "^4.6.0",
       "bootstrap-select": "^1.13.18",
+      "http2": "^3.3.7",
       "jquery": "^3.6.0",
       "lodash": "^4.17.10",
       "pdfjs-dist": "2.2.228",
       "popper": "^1.0.1",
+      "popper.js": "^1.16.1",
       "prop-types": "^15.7.2",
       "react": "^16.12.0",
       "react-dom": "^16.12.0",
@@ -7397,6 +7399,11 @@ Lockfile:
       quick-lru "^5.1.1"
       resolve-alpn "^1.0.0"
   
+  http2@^3.3.7:
+    version "3.3.7"
+    resolved "https://registry.yarnpkg.com/http2/-/http2-3.3.7.tgz#78396eb1e0bcd1db1f4b138d997c682e23414fbc"
+    integrity sha512-puSi8M8WNlFJm9Pk4c/Mbz9Gwparuj3gO9/RRO5zv6piQ0FY+9Qywp0PdWshYgsMJSalixFY7eC6oPu0zRxLAQ==
+  
   https-browserify@^1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
@@ -10581,6 +10588,11 @@ Lockfile:
     integrity sha512-7Wjy+9E3WwLOEL30D+m8TSTF7qJJUJLONBnwQp0518siuMxUQUbgZwssaFX+QKlZkjHZcw/IpZCt/H0srrntSg==
     dependencies:
       ts-pnp "^1.1.6"
+  
+  popper.js@^1.16.1:
+    version "1.16.1"
+    resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
+    integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
   
   popper@^1.0.1:
     version "1.0.1"

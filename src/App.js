@@ -28,6 +28,7 @@ import type {
 import "./style/App.css";
 require("popper.js");
 require("bootstrap");
+require("jscolor");
 import "./lib/bootstrap/css/bootstrap.min.css"
 
 type T_ManuscriptHighlight = T_Highlight;
@@ -133,6 +134,7 @@ class App extends Component<Props, State> {
       return highlight_id !== highlight.id
       })});
   }
+
   openPDF = (highlights, url, data) => {
     let schema = defaultTags;
     if(typeof highlights.schema != "undefined") schema = highlights.schema;
@@ -144,6 +146,15 @@ class App extends Component<Props, State> {
       tags: schema,
       relationships: highlights.relationships
     });
+    highlights.highlights.forEach(hlight => {
+        data.forEach(tag => {
+            if(tag.name == hlight.comment.text){
+              hlight.position.rects.forEach(rect => {
+                  rect.background = tag.color;
+                })
+            }
+          })
+      })
     defaultTags.forEach(tag => {
         let tagID = `.Highlight__` + tag.name;
         //document.getElementById(tagID).style.color=tag.color;
@@ -391,6 +402,7 @@ class App extends Component<Props, State> {
     const { highlights } = this.state;
     const { url } = this.state;
     const { data } = this.state;
+    const { tags } = this.state;
     const { relationships } = this.state;
     const electron = window.require('electron');
     const ipcRenderer  = electron.ipcRenderer;
@@ -402,10 +414,12 @@ class App extends Component<Props, State> {
       <div className="App" style={{ display: "flex", height: "100vh" }}>
         <Sidebar
           highlights={highlights}
+          tags={tags}
           relationships={relationships}
           resetHighlights={this.resetHighlights}
           removeHighlight={this.removeHighlight}
           addRelationship={this.addRelationship}
+          openSchema={this.openSchema}
         />
         <div
           style={{
