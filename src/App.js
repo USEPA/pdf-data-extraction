@@ -28,7 +28,7 @@ import type {
 import "./style/App.css";
 require("popper.js");
 require("bootstrap");
-require("jscolor");
+require('@eastdesire/jscolor');
 import "./lib/bootstrap/css/bootstrap.min.css"
 
 type T_ManuscriptHighlight = T_Highlight;
@@ -347,7 +347,7 @@ class App extends Component<Props, State> {
       tags: this.state.tags,
       relationships: this.state.relationships
     });
-    alert(JSON.stringify(highlight));
+    // alert(JSON.stringify(highlight));
   } //end addHighlight
 
   updateHighlight(highlightId: string, position: Object, content: Object) {

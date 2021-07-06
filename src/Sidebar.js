@@ -34,6 +34,19 @@ const updateHash = highlight => {
 };
 
 function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighlight, addRelationship, openSchema }: Props) {
+  const groupedByDate = {};
+highlights.forEach(message => {
+  const key = message.comment.text;
+
+  // push message to existing key or create new array containing this message
+  if(groupedByDate[key]) {
+    groupedByDate[key].push(message);
+  } else {
+    groupedByDate[key] = [message];
+  }
+});
+var myMap = Object.values(groupedByDate)
+
   return (
     <div className="sidebar" style={{ width: "35vw" }}>
 
@@ -50,60 +63,71 @@ function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighl
         <div className="tab-pane fade show active" id="annotation" role="tabpanel" aria-labelledby="annotation-tab">
 
 
-          <ul className="sidebar__highlights">
 
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editSchemaModal">
+          <button type="button" className="btn btn-link" data-toggle="modal" data-target="#editSchemaModal">
             Edit Schema
           </button>
 
-            {highlights.map((highlight, index) => (
-              <li
-                key={index}
-                className="sidebar__highlight"
-                onClick={() => {
-                  updateHash(highlight);
+<div className="accordion" id="accordionExample">
+
+{myMap.map((highlight, index) => (
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="headingOne">
+      <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + index} aria-expanded="true" aria-controls="collapseOne">
+        {highlight[0].comment.text}
+      </button>
+    </h2>
+
+  {highlight.map(message => (
+    <div id={"collapse" + index} className="accordion-collapse collapse show" aria-labelledby="headingOne"  onClick={() => {
+                  updateHash(message);
                 }}
+>
+      <div class="accordion-body">
+      <div>
+      <div style={{padding: "1rem"}}>
+                <button onClick={(e) => confirm("Are you sure?") ? removeHighlight(message.id) : 'false'}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg></button>
+                <button onClick={(e) => editHighlight(message.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg></button>
+              </div>
+            {message.content.text ? (
+              <blockquote style={{ marginTop: "0.5rem" }}>
+                {`${message.content.text.slice(0, 90).trim()}…`}
+              </blockquote>
+            ) : null}
+            {message.content.image ? (
+              <div
+                className="highlight__image"
+                style={{ marginTop: "0.5rem" }}
               >
-                <div>
-                <div style={{ padding: "1rem" }}>
-                  <button onClick={(e) => removeHighlight(highlight.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-</svg></button>
-                  <button onClick={(e) => editHighlight(highlight.id)}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-</svg></button>
-                </div>
-                  <strong>{highlight.comment.text}</strong>
+                <img src={message.content.image} alt={"Screenshot"} />
+              </div>
+            ) : null}
+            </div>
+            <div className="highlight__location">
+            Page {message.position.pageNumber}
+          </div>
 
-                  {highlight.content.text ? (
-                    <blockquote style={{ marginTop: "0.5rem" }}>
-                      {`${highlight.content.text.slice(0, 90).trim()}…`}
-                    </blockquote>
-                  ) : null}
-                  {highlight.content.image ? (
-                    <div
-                      className="highlight__image"
-                      style={{ marginTop: "0.5rem" }}
-                    >
-                      <img src={highlight.content.image} alt={"Screenshot"} />
-                    </div>
-                  ) : null}
-                </div>
-
-                <div className="highlight__location">
-                  Page {highlight.position.pageNumber}
-                </div>
-
-                {highlight.comment.relationship ? (
-                  <a className="button4">{highlight.comment.relationship}</a>
-                ) : null}
+          {message.comment.relationship ? (
+            <a className="button4">{message.comment.relationship}</a>
+          ) : null}
+      </div>
+    </div>
+    ))}
 
 
-              </li>
-            ))}
-          </ul>
+  </div>
+))}
+
+</div>
+
+
+
           {highlights.length > 0 ? (
             <div style={{ padding: "1rem" }}>
               <button onClick={resetHighlights}>Reset Annotations</button>
@@ -203,27 +227,69 @@ function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighl
                 </button>
               </div>
               <div class="modal-body">
+                <table id="tagsTable">
 
-              {tags.map((tag, index) => (
+                  {tags.map((tag, index) => (
 
-                    <div>
-                    <label>{tag.name}</label>
-                    <input id={index} data-jscolor="{}" value={tag.color}></input>
-                    </div>
+                        <tr id={tag.name + "modaltr" + index}>
+                        <th><p name="tagname" contenteditable = "true">{tag.name}</p></th>
+                        <th><input name="tagcolor" data-jscolor="{}" value={tag.color}></input></th>
+                        <th><button onClick={function(){if(confirm("Remove " + tag.name + "?")){ document.getElementById(tag.name + "modaltr" + index).remove();}}}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+      </svg></button></th>
+                        </tr>
 
-              ))}
-
-
+                  ))}
+                  {jscolor.install()}
+                </table>
               </div>
+              <button type="button" class="btn btn-link" onClick={function(){
+                var inputs, index;
+                    var tagNameInputs = document.getElementsByName('tagname');
+                    var tagColorInputs = document.getElementsByName('tagcolor');
+                    var temp = {};
+                    var tempTags = [];
+                    inputs = document.getElementsByTagName('input');
+
+                    for (index = 0; index < tagNameInputs.length; ++index) {
+                        temp = {};
+                        temp.id = tagNameInputs[index].textContent;
+                        temp.name = tagNameInputs[index].textConent;
+                        temp.color = tagColorInputs[index].value;
+                        tempTags[index] = temp;
+                    }
+
+                let t = {};
+                t.id = "";
+                t.name = "<new>";
+                t.color = "#FBFF17";
+                tags.push(t);
+                openSchema(tags);
+                jscolor.install();
+
+              }}>
+                Add Entity Type
+              </button>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={function(){var inputs, index;
-
+                    var tagNameInputs = document.getElementsByName('tagname');
+                    var tagColorInputs = document.getElementsByName('tagcolor');
+                    var temp = {};
+                    var tempTags = [];
                     inputs = document.getElementsByTagName('input');
-                    for (index = 0; index < inputs.length; ++index) {
-                        tags[index].color = inputs[index].value;
+
+                    for (index = 0; index < tagNameInputs.length; ++index) {
+                        temp = {};
+                        temp.id = tagNameInputs[index].textContent;
+                        temp.name = tagNameInputs[index].textContent;
+                        temp.color = tagColorInputs[index].value;
+                        tempTags[index] = temp;
                     }
-                    openSchema(tags);
+                    tags = tempTags;
+                    openSchema(tempTags);
+                    jscolor.install();
 
                   } }>Save</button>
               </div>
