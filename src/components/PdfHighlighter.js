@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import ReactDom from "react-dom";
 import Pointable from "react-pointable";
 import _ from "lodash/fp";
-import { PDFViewer, PDFLinkService, getGlobalEventBus } from "pdfjs-dist/web/pdf_viewer";
+import { PDFViewer, PDFLinkService, PDFFindController, getGlobalEventBus } from "pdfjs-dist/web/pdf_viewer";
 import "pdfjs-dist/web/pdf_viewer.css";
 import "../style/pdf_viewer.css";
 import "../style/PdfHighlighter.css";
@@ -139,6 +139,7 @@ class PdfHighlighter extends PureComponent {
     });
 
     _defineProperty(this, "afterSelection", () => {
+      console.log("after selection");
       const {
         onSelectionFinished
       } = this.props;
@@ -169,6 +170,7 @@ class PdfHighlighter extends PureComponent {
         rects,
         pageNumber: page.number
       };
+      console.log(viewportPosition);
       const content = {
         text: range.toString()
       };
@@ -202,11 +204,15 @@ class PdfHighlighter extends PureComponent {
     } = this.props;
     this.debouncedAfterSelection = _.debounce(500, this.afterSelection);
     this.linkService = new PDFLinkService();
+    this.pdfFindController = new PDFFindController({
+      linkService: this.linkService
+    });
     this.viewer = new PDFViewer({
       container: this.containerNode,
       enhanceTextSelection: true,
       removePageBorders: true,
-      linkService: this.linkService
+      linkService: this.linkService,
+      findController: this.pdfFindController
     });
     this.viewer.setDocument(pdfDocument);
     this.linkService.setDocument(pdfDocument);
@@ -381,7 +387,7 @@ class PdfHighlighter extends PureComponent {
     var plaintext = "";
     //const canv = document.getElementById('page1');
     for (var pn = 1; pn <= pdfDocument.numPages; pn++) {
-      console.log("hello" + plaintext);
+      // console.log("hello" + plaintext);
       var page = await pdfDocument.getPage(pn);
         var unscaledViewport = page.getViewport({scale:1});
         //var scale = Math.min((canv.height / unscaledViewport.height), (canv.width / unscaledViewport.width));

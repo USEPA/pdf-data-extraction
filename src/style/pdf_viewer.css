@@ -39,3 +39,11 @@ html
 @supports (-ms-ime-align:auto) {
   .textLayer {opacity: 0.5 }
 }
+
+.textLayer .highlight.selected {
+  background-color: rgb(166, 228, 166);
+}
+
+.textLayer .highlight {
+  background-color: rgb(120, 100, 200);
+}

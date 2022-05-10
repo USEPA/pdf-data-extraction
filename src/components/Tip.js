@@ -53,9 +53,11 @@ class Tip extends Component<Props, State> {
       onUpdate();
 
       let optionList = document.getElementById('tagSelect').options;
+      optionList.add(
+        new Option("Select Type: ", "")
+      );
 
-
-      this.props.tags.forEach(option =>
+      this.props.tags.annotation_types.forEach(option =>
         optionList.add(
           new Option(option.name, option.id)
         )
@@ -108,7 +110,7 @@ class Tip extends Component<Props, State> {
               <select
                 id = "tagSelect"
                 width="100%"
-                placeholder="Your comment"
+                placeholder=""
                 autoFocus
                 value={text}
                 onChange={event => this.setState({ text: event.target.value})}
