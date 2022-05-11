@@ -70,11 +70,11 @@ const HighlightPopup = ({ comment }) =>
 function addTagsToFinder(data)
 {
   //Create and append select list
-  var selectList = document.getElementById('cars');
+  var selectList = document.getElementById('entities');
   if(selectList != null){
-    var selectedIndex = $("#cars")[0].selectedIndex;
+    var selectedIndex = $("#entities")[0].selectedIndex;
     //Create and append the options
-    $("#cars").empty();
+    $("#entities").empty();
     for (var i = 0; i < data.length; i++) {
         var option = document.createElement("option");
         option.value = data[i].name;
@@ -82,7 +82,7 @@ function addTagsToFinder(data)
         selectList.appendChild(option);
     }
     // Do something here to leave it selected correctly
-    $("#cars")[0].selectedIndex = selectedIndex;
+    $("#entities")[0].selectedIndex = selectedIndex;
 
   }
 
@@ -126,8 +126,6 @@ function findAnnotate(param){
 
 
   console.log(height, left, top, width);
-  // console.log("Getting selection");
-  // console.log($("#cars")[0][$("#cars")[0].selectedIndex].value);
 
   var highlight = {
     "content": {
@@ -153,7 +151,7 @@ function findAnnotate(param){
       "pageNumber": pageIndex + 1,
     },
     "comment": {
-    		"text": $("#cars")[0][$("#cars")[0].selectedIndex].value,
+    		"text": $("#entities")[0][$("#entities")[0].selectedIndex].value,
     		"relationship": ""
     	}
   }
@@ -850,7 +848,7 @@ class App extends Component<Props, State> {
 
     return (
 
-      <div  class="split" className="App" style={{ display: "flex", height: "100vh" }}>
+      <div  class="split" className="App" style={{ display: "flex", height: "100vh" }} >
 
         <Sidebar
           highlights={highlights}
@@ -957,11 +955,10 @@ class App extends Component<Props, State> {
             <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">Match case</label>
             <input type="checkbox" id="findWholeWord" class="hidden" tabindex="95"/>
             <label for="findWholeWord" class="toolbarLabel" data-l10n-id="find_whole_word_label">Whole words</label>
-            <label for="cars">Choose a car:</label>
+            <label for="entities">Choose an entity:</label>
 
-            <select name="cars" id="cars">
+            <select name="entities" id="entities">
               <option value="volvo"></option>
-              // {console.log(this.state)}
               {addTagsToFinder(this.state.tags.annotation_types)}
             </select>
             <button type="button" onClick={(e) => findAnnotate(this) }>Annotate</button>
