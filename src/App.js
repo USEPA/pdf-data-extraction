@@ -168,6 +168,10 @@ function findAnnotate(param){
   // pdfHighlights.innerHTML += ("<div><div class=\"Highlight \"><span class=\"Highlight__part\" id=\"TestArticle\" style=\" left: " + left + "px; top: " + top + "px; width: " + width + "px; height: " + height + "px; background: rgb(251, 255, 23);\"></div></div></div>");
 }
 
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 function rotatePagesClockwise()
 {
   window.PdfViewer.viewer.pagesRotation += 90;
@@ -433,7 +437,9 @@ class App extends Component<Props, State> {
       tags: data,
       relationships: this.state.relationships
     });
-  jscolor.install();
+    delay(.1).then(() => jscolor.install());
+
+
   };
 
   openAnnot = (highlights) => {

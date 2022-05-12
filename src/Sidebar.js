@@ -49,6 +49,11 @@ function updateTable(t, text,type,userName,page, id){
     ] ).draw( false );
 }
 
+function afterClick()
+{
+  console.log('This is after click');
+}
+
 var t;
 
 function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighlight, addRelationship, openSchema, annoEdit, addRelationshipToAnno, addRelationshipType }: Props) {
@@ -157,7 +162,6 @@ t.clear();
             </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary" onClick={() => {addRelationshipToAnno(message.id); jQuery(`#editAnnoModal${message.id}`).modal('hide');}}>Add to relationship</button>
               <button type="button" className="btn btn-secondary" onClick={() => jQuery(`#editAnnoModal${message.id}`).modal('hide')}>Close</button>
               <button type="button" className="btn btn-primary" onClick={() => {annoEdit(message.id, jQuery("#annoEditSel" + message.id).val()); jQuery(`#editAnnoModal${message.id}`).modal('hide')}}>Save</button>
             </div>
@@ -241,7 +245,7 @@ t.clear();
 
                         <tr key={index} id={tag.name + "modaltr" + index}>
                         <th><p name="tagname" contentEditable = "true">{tag.name}</p></th>
-                        <th><input name="tagcolor" data-jscolor="{}" defaultValue={tag.color}></input></th>
+                        <th><input class="jscolor" name="tagcolor" data-jscolor="{}" defaultValue={tag.color}></input></th>
                         <th><button onClick={function(){if(confirm("Remove " + tag.name + "?")){
                             tags.annotation_types.splice(index, 1);
                             openSchema(tags);
@@ -260,8 +264,15 @@ t.clear();
               <button type="button" class="btn btn-link" onClick={function(){
 
                 // var inputs, index;
-                // var tagNameInputs = document.getElementsByName('tagname');
-                var tagColorInputs = document.getElementsByName('tagcolor');
+                // var index;
+                // // var tagNameInputs = document.getElementsByName('tagname');
+                // var tagColorInputs = document.getElementsByName('tagcolor');
+                //
+                // tagColorInputs.forEach((item, i) => {
+                //   console.log(item);
+                // });
+
+
                 // console.log(tagColorInputs[tagColorInputs.length]);
                 // var temp = {};
                 // var tempTags = [];
@@ -281,8 +292,10 @@ t.clear();
                 t.name = "<new>";
                 t.color = "#FBFF17";
                 tempt.annotation_types.push(t);
-                jscolor.install();
+                // jscolor.install();
+                // console.log(tagColorInputs[tagColorInputs.length]);
                 openSchema(tempt);
+                afterClick();
 
               }}>
                 Add Entity Type
