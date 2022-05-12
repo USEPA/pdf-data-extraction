@@ -49,11 +49,6 @@ function updateTable(t, text,type,userName,page, id){
     ] ).draw( false );
 }
 
-function afterClick()
-{
-  console.log('This is after click');
-}
-
 var t;
 
 function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighlight, addRelationship, openSchema, annoEdit, addRelationshipToAnno, addRelationshipType }: Props) {
@@ -263,39 +258,13 @@ t.clear();
               </div>
               <button type="button" class="btn btn-link" onClick={function(){
 
-                // var inputs, index;
-                // var index;
-                // // var tagNameInputs = document.getElementsByName('tagname');
-                // var tagColorInputs = document.getElementsByName('tagcolor');
-                //
-                // tagColorInputs.forEach((item, i) => {
-                //   console.log(item);
-                // });
-
-
-                // console.log(tagColorInputs[tagColorInputs.length]);
-                // var temp = {};
-                // var tempTags = [];
-                // inputs = document.getElementsByTagName('input');
-                //
-                // for (index = 0; index < tagNameInputs.length; ++index) {
-                //     temp = {};
-                //     temp.id = tagNameInputs[index].textContent;
-                //     temp.name = tagNameInputs[index].textConent;
-                //     temp.color = tagColorInputs[index].value;
-                //     tempTags[index] = temp;
-                // }
-
                 let t = {};
                 let tempt = tags;
                 t.id = "<new>";
                 t.name = "<new>";
                 t.color = "#FBFF17";
                 tempt.annotation_types.push(t);
-                // jscolor.install();
-                // console.log(tagColorInputs[tagColorInputs.length]);
                 openSchema(tempt);
-                afterClick();
 
               }}>
                 Add Entity Type

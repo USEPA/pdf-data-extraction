@@ -1038,16 +1038,7 @@ class App extends Component<Props, State> {
 
 
                   });
-                  ipcRenderer.on('auto-annotate', (event) => {
-                    //filePath = file;
-                    //originalContent = content;
-                    // waiting on gettext to finish completion, or error
-
-                    //this.updateText(plaintext);
-                    //alert(plaintext);
-                    //alert(getPdfText(data));
-
-                  });
+                  
                   ipcRenderer.on("filepaths", function(event, message) {
                     if(message == undefined) return
                     else{

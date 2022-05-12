@@ -148,29 +148,6 @@ const template = [
       ]
    },
    {
-      label: 'Annotate',
-      submenu: [
-        {
-          label: 'Auto',
-          click(item, focusedWindow) {
-            if (focusedWindow) {
-              return autoAnnotate(focusedWindow);
-            }
-
-          },
-        }, // “Save File” and “Export HTML” menus are defined here.
-         {
-            label: 'Reset',
-            click(item, focusedWindow) {
-              if (focusedWindow) {
-                //return saveFile(focusedWindow);
-              }
-
-            },
-         }
-      ]
-   },
-   {
       label: 'View',
       submenu: [
          {
