@@ -66,6 +66,7 @@ const HighlightPopup = ({ comment }) =>
 // const DEFAULT_URL = "https://arxiv.org/pdf/1708.08021.pdf";
   const DEFAULT_URL = "https://www.med.unc.edu/webguide/wp-content/uploads/sites/419/2019/07/AdobePDF.pdf"
 // const DEFAULT_URL = "http://localhost:3000/test2.pdf";
+let cur_highlgiht_id = 0;
 
 function addTagsToFinder(data)
 {
@@ -88,26 +89,7 @@ function addTagsToFinder(data)
 
 }
 
-
 function findAnnotate(param){
-  // left: page.node.offsetLeft + boundingRect.left + boundingRect.width / 2,
-  // top: boundingRect.top + page.node.offsetTop,
-  // bottom: boundingRect.top + page.node.offsetTop + boundingRect.height
-  // console.log(document.getElementsByClassName("highlight selected"));
-  // var scale = parseFloat(document.getElementsByClassName("highlight selected")[0].parentElement.style.transform.slice(7,-1));
-  // console.log(scale);
-
-//   height: 25.1952px; Span * scale
-// left: 494.475px;  (spanWidth * scale) - (spanLeft * scale)
-// top: 131.556px; span - highlight
-// width: 81.7132px;  highlight * scale
-
-  // var height =   document.getElementsByClassName("highlight selected")[0].offsetParent.offsetHeight * scale;
-  // var left   =   (document.getElementsByClassName("highlight selected")[0].offsetParent.offsetWidth * scale) - (document.getElementsByClassName("highlight selected")[0].offsetParent.offsetLeft * scale);
-  // var top    =   document.getElementsByClassName("highlight selected")[0].offsetParent.offsetTop - document.getElementsByClassName("highlight selected")[0].offsetTop;
-  // var width  =   document.getElementsByClassName("highlight selected")[0].offsetWidth * scale;
-  // const findState = window.PdfViewer.viewer.findController.state;
-  // console.log(findState);
   var pageIndex = window.PdfViewer.viewer.findController.selected.pageIdx;
   console.log(pageIndex);
   // var pageIndex = window.PdfViewer.viewer.currentPageNumber - 1;
@@ -191,23 +173,6 @@ function zoomPagesOut(){
 }
 
 function findNextWord(){
-  // // const eventBus = window.PdfViewer.viewer.eventBus;
-  // const eventBus = new pdfjsViewer.EventBus();
-  // // const pdfLinkService = window.PdfViewer.viewer.linkService;
-  // const pdfLinkService = new pdfjsViewer.PDFLinkService({
-  //   eventBus,
-  // });
-  // // const pdfFindController = new pdfjsViewer.PDFFindController({
-  // //   eventBus,
-  // //   linkService: pdfLinkService
-  // // });
-  //
-  // const pdfFindController = new pdfjsViewer.PDFFindController({
-  //   eventBus,
-  //   linkService: pdfLinkService,
-  // });
-
-  // console.log(window.PdfViewer);
 
   var highlight_all = false;
   var match_case = false;
@@ -237,14 +202,6 @@ function findNextWord(){
   console.log(window.PdfViewer.viewer.findController._matchesCountTotal);
   const findState = window.PdfViewer.viewer.findController.state;
   console.log(findState);
-  // console.log();
-  // setTimeout(() => {
-  //     console.log(window.PdfViewer.viewer.findController._requestMatchesCount());
-  // }, 1000);
-
-//   window.PdfViewer.viewer.eventBus.on('updatefindmatchescount', data => {
-//     console.log(data);
-// });
 
 }
 
@@ -279,28 +236,9 @@ function findLastWord(){
 
 }
 
-// function checkIt(e){
-//   // console.log(e);
-//     if(document.getElementById(e).checked){
-//     alert('checked');
-//     } else {
-//     alert('unchecked');
-//     }
-// }
-
 function rotate_point(pointX, pointY, originX, originY, angle) {
     angle = angle * Math.PI / 180.0;
-   //  ox, oy = origin
-   // px, py = point
-   //
-   // qx = ox + math.cos(angle) * (px - ox) - math.sin(angle) * (py - oy)
-   // qy = oy + math.sin(angle) * (px - ox) + math.cos(angle) * (py - oy)
-
     return {
-        // x: originX + Math.cos(angle) * (pointX - originX) - Math.sin(angle) * (pointY - originY),
-        // y: originY + Math.sin(angle) * (pointX - originX) + Math.cos(angle) * (pointY - originY)
-        // x: Math.cos(angle) * (pointX-originX) - Math.sin(angle) * (pointY-originY) + originX,
-        // y: Math.sin(angle) * (pointX-originX) + Math.cos(angle) * (pointY-originY) + originY
         x:  (pointX * Math.cos(angle)) + (pointY * Math.sin(angle)),
         y: -(pointX * Math.sin(angle)) + (pointY * Math.cos(angle))
     };
@@ -453,23 +391,6 @@ class App extends Component<Props, State> {
       tags: schema,
       relationships: this.state.relationships
     });
-    //console.log(highlights);
-    // highlights.highlights.forEach(hlight => {
-    //     data.forEach(tag => {
-    //         if(tag.name == hlight.comment.text){
-    //           hlight.position.rects.forEach(rect => {
-    //               rect.background = tag.color;
-    //             })
-    //         }
-    //       })
-    //   })
-    //defaultTags.forEach(tag => {
-        //let tagID = `.Highlight__` + tag.name;
-        //document.getElementById(tagID).style.color=tag.color;
-      //  $(tagID).css({"background": tag.color})
-      //  $(tagID).css({"position": "absolute"});
-      //});
-      //$('#myModal').modal('hide');
   };
 
   scrollViewerTo = (highlight: any) => {};
@@ -598,18 +519,6 @@ class App extends Component<Props, State> {
                   } //if
                 } //else if
 
-                //alert(JSON.stringify(highlight.position.rects) + " matching text" + x1 + " " + y1 + " " + x2 + " " + y2);
-
-
-              //const scale = this.pdfViewer.currentScale;
-
-              //const scale = 809.9999999999999 / 1200;
-
-              //let x2 = (x * scale);
-              //let y2 = ((y + h) * scale);
-              //alert(textItem.str + " " + scale + " " + x1);
-              //alert(textItem.str)
-
             } //for textitems
             this.state.tags.annotation_types.forEach(tag => {
                 if(tag.id != 0){
@@ -634,69 +543,7 @@ class App extends Component<Props, State> {
     const currentTags = this.state.tags;
     const defaultBGColor = "yellow";
     highlight.position.rects.forEach(rect => {
-
-    // highlight.position.rects.forEach(async rect => {
         rect.background = "yellow"; // TODO THIS NEVER HAPPEN
-        // var x1y1 = rotate_point(rect.x1, rect.y1, 0, 0, 90);
-        // var x2y2 = rotate_point(rect.x2, rect.y2, 0, 0, 90);
-        // console.log(rect);
-        // var x1y1 = {x: rect.x1, y: rect.y1};
-        // var x2y2 = {x: rect.x2, y: rect.y2};
-
-        // PDFViewerApplication.pdfViewer.getPageView(0).viewport.convertToPdfPoint(0,0);
-        // console.log(pdfDocument);
-        // var page = await pdfDocument.getPage(1);
-        // var vp = page.getViewport({scale:1.649169176049577});
-        // console.log(vp);
-        // console.log(vp.convertToPdfPoint(x1y1.x, x1y1.y));
-        // console.log(vp.convertToPdfPoint(x2y2.x, x2y2.y));
-        //
-        // var pdfx1y1 = vp.convertToPdfPoint(x1y1.x + rect.height, x1y1.y + rect.width);
-        // var pdfx2y2 = vp.convertToPdfPoint(x2y2.x + rect.height, x2y2.y + rect.width);
-        //
-        // rect.x1 = pdfx1y1[0];
-        // rect.x2 = pdfx1y1[1];
-        // rect.y1 = pdfx2y2[0];
-        // rect.y2 = pdfx2y2[1];
-
-        // rect.x1 = x1y1.x - 13;
-        // rect.x2 = x2y2.x - 13;
-        // rect.y1 = x1y1.y + rect.height;
-        // rect.y2 = x2y2.y + rect.height;
-        //
-        // console.log(rect.x1, rect.y1, rect.x2, rect.y2);
-        // //
-        // console.log(x1y1, x2y2);
-        // highlight.position.boundingRect.x1 = x1y1.x;
-        // highlight.position.boundingRect.x2 = x2y2.x;
-        // // rect.x2 = x2y2.x;
-        //
-        // highlight.position.boundingRect.y1 = x1y1.y;
-        // highlight.position.boundingRect.y2 = x2y2.y;
-
-        // rect.x1 = x1y1.x;
-        // rect.x2 = x2y2.x;
-        //
-        // rect.y1 = x1y1.y;
-        // rect.y2 = x2y2.y;
-
-        // rect.y2 = x2y2.y;
-
-
-        // //
-        // highlight.position.boundingRect.x1 = x1y1.x;
-        // highlight.position.boundingRect.x2 = x2y2.x;
-        //
-        // highlight.position.boundingRect.y1 = x1y1.y;
-        // highlight.position.boundingRect.y2 = x2y2.y;
-        //
-        // highlight.position.boundingRect = viewportToScaled(boundingRect)
-        // rect.x1 = x1y1.x;
-        // rect.x2 = x2y2.x;
-        //
-        // rect.y1 = x1y1.y + rect.height + 20;
-        // rect.y2 = x2y2.y + rect.height + 20;
-
       })
     currentTags.annotation_types.forEach((tag, index) => {
       if(tag.name == highlight.comment.text)
@@ -799,7 +646,7 @@ class App extends Component<Props, State> {
 
       var editedh = this.state.highlights;
       var currentTags = this.state.tags;
-      //this.removeHighlight(id);
+      // this.removeHighlight(id);
       var index = editedh.map(function(e) { return e.id; }).indexOf(id);
 
       if(index > -1)
@@ -810,6 +657,34 @@ class App extends Component<Props, State> {
           {
               editedh[index].position.rects.forEach(rect => {
                 rect.background = tag.color;
+                if(editedh[index].id == id){
+                  var curr_highlights = document.getElementsByClassName('Highlight__part');
+                  var item_x1 = Math.trunc(editedh[index].position.boundingRect.x1);
+                  var item_y1 = Math.trunc(editedh[index].position.boundingRect.y1);
+                  if(editedh[index].position.rects.length == 1){
+                    for(var i = 0; i < curr_highlights.length; i++){
+                      var highlight_x1 = Math.trunc(curr_highlights[i].style.left.slice(0, -2));
+                      var highlight_y1 = Math.trunc(curr_highlights[i].style.top.slice(0, -2));
+
+                      if (highlight_x1 == item_x1 && highlight_y1 == item_y1){
+                        curr_highlights[i].style.background = tag.color;
+                      }
+                    }
+                  }else{
+                    for(var i = 0; i < curr_highlights.length; i++){
+                      editedh[index].position.rects.forEach((item, i) => {
+                        var multi_item_x1 = Math.trunc(item.x1);
+                        var multi_item_y1 = Math.trunc(item.y1);
+                        var highlight_x1 = Math.trunc(curr_highlights[i].style.left.slice(0, -2));
+                        var highlight_y1 = Math.trunc(curr_highlights[i].style.top.slice(0, -2));
+
+                        if (highlight_x1 == multi_item_x1 && highlight_y1 == multi_item_y1){
+                          curr_highlights[i].style.background = tag.color;
+                        }
+                      });
+                    }
+                  }
+                }
               })
           }
         });
@@ -822,7 +697,6 @@ class App extends Component<Props, State> {
         tags: this.state.tags,
         relationships: this.state.relationships
       });
-
     }
   }
 
@@ -1038,7 +912,7 @@ class App extends Component<Props, State> {
 
 
                   });
-                  
+
                   ipcRenderer.on("filepaths", function(event, message) {
                     if(message == undefined) return
                     else{
@@ -1182,6 +1056,7 @@ class App extends Component<Props, State> {
                         this.addRelationshipToAnno(highlight.id);
                       }else
                       {
+                        cur_highlgiht_id = highlight.id;
                         jQuery(`#editAnnoModal${highlight.id}`).modal('show')};
                       }
                       }><Popup
