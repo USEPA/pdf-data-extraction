@@ -40,10 +40,11 @@
     "react-rnd": "^7.1.5",
     "react-scripts": "*",
     "split.js": "^1.6.4",
-    "url-search-params": "^1.1.0"
+    "url-search-params": "^1.1.0",
+    "webpack-dev-middleware": "^5.3.3"
   },
   "build": {
-    "productName": "EPAAT",
+    "productName": "PANDHA",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/**/*",

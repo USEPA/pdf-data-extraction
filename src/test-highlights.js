@@ -1,5 +1,5 @@
 const testHighlights = {
-  "https://www.med.unc.edu/webguide/wp-content/uploads/sites/419/2019/07/AdobePDF.pdf": [
+  "http://localhost:3000/AdobePDF.pdf": [
     {
       content: {
         text: ""

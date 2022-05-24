@@ -64,8 +64,8 @@ const HighlightPopup = ({ comment }) =>
   ) : null;
 
 // const DEFAULT_URL = "https://arxiv.org/pdf/1708.08021.pdf";
-  const DEFAULT_URL = "https://www.med.unc.edu/webguide/wp-content/uploads/sites/419/2019/07/AdobePDF.pdf"
-// const DEFAULT_URL = "http://localhost:3000/test2.pdf";
+//const DEFAULT_URL = "https://www.med.unc.edu/webguide/wp-content/uploads/sites/419/2019/07/AdobePDF.pdf"
+const DEFAULT_URL = "http://localhost:3000/AdobePDF.pdf";
 let cur_highlgiht_id = 0;
 
 function addTagsToFinder(data)
@@ -141,13 +141,6 @@ function findAnnotate(param){
   console.log(highlight);
 
   param.addHighlight(window.PdfViewer.viewer.pdfDocument, highlight);
-
-
-
-  // <div class="Highlight "><div class="Highlight__part" id="TestArticle" style="left: 505.283px; top: 156.187px; width: 80.1107px; height: 30.6725px; background: rgb(251, 255, 23);"></div></div>
-  // var pdfHighlights = document.querySelectorAll('div[class$="PdfHighlighter__highlight-layer"]')[pageIndex].children[0];
-  //
-  // pdfHighlights.innerHTML += ("<div><div class=\"Highlight \"><span class=\"Highlight__part\" id=\"TestArticle\" style=\" left: " + left + "px; top: " + top + "px; width: " + width + "px; height: " + height + "px; background: rgb(251, 255, 23);\"></div></div></div>");
 }
 
 function delay(time) {
@@ -983,7 +976,7 @@ class App extends Component<Props, State> {
                   //});
 
                   });
-                  ipcRenderer.on('save-schema', (event, app_path) => {
+                  ipcRenderer.once('save-schema', (event, app_path) => {
                     console.log(app_path);
                     //filePath = file;
                     //originalContent = content;
