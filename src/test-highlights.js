@@ -1,5 +1,5 @@
 const testHighlights = {
-  "http://localhost:3000/AdobePDF.pdf": [
+  "./AdobePDF.pdf": [
     {
       content: {
         text: ""

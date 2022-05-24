@@ -65,7 +65,8 @@ const HighlightPopup = ({ comment }) =>
 
 // const DEFAULT_URL = "https://arxiv.org/pdf/1708.08021.pdf";
 //const DEFAULT_URL = "https://www.med.unc.edu/webguide/wp-content/uploads/sites/419/2019/07/AdobePDF.pdf"
-const DEFAULT_URL = "http://localhost:3000/AdobePDF.pdf";
+// const DEFAULT_URL = "http://localhost:3000/AdobePDF.pdf";
+const DEFAULT_URL = "./AdobePDF.pdf"
 let cur_highlgiht_id = 0;
 
 function addTagsToFinder(data)
