@@ -9,9 +9,9 @@
 
 # User Guide
 
-**PDF Annotation and Data Harmonization (PANDHA)**
+**PDF Entity Annotation Tool (PEAT)**
 
-**Version 1.1.0**
+**Version 1.1.1**
 
 
 1. Scope and Purpose
