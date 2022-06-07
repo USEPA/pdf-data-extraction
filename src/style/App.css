@@ -109,3 +109,7 @@ blockquote:after {
   margin:0.2em auto;
 }
 }
+
+.dataTables_filter {
+   float: right !important;
+}

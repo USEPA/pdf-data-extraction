@@ -1,9 +1,5 @@
 {
 "annotation_types":[{
-  "id": "Testtest",
-  "name": "Testtest",
-  "color": "blue"
-}, {
   "id": "Vehicle",
   "name": "Vehicle",
   "color": "#ce11dd"

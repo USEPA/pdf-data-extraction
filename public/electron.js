@@ -1,6 +1,6 @@
 const electron = require('electron');
 // Module to control application life.
-const { app, BrowserWindow, Menu, MenuItem, dialog } = require('electron');
+const { app, BrowserWindow, Menu, MenuItem, dialog, globalShortcut } = require('electron');
 // Module to create native browser window.
 //const BrowserWindow = electron.BrowserWindow;
 
@@ -17,7 +17,7 @@ var inFileName = "";
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 1024, height: 768, webPreferences: { nodeIntegration: true, webSecurity: false }});
+    mainWindow = new BrowserWindow({width: 1024, height: 768, icon: path.join(__dirname, 'icon.png'), webPreferences: { nodeIntegration: true, webSecurity: false }});
 
 
     // and load the index.html of the app.
@@ -530,3 +530,16 @@ function openHelpWindow() {
 }
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+app.on('browser-window-focus', function () {
+    globalShortcut.register("CommandOrControl+R", () => {
+        console.log("CommandOrControl+R is pressed: Shortcut Disabled");
+    });
+    globalShortcut.register("F5", () => {
+        console.log("F5 is pressed: Shortcut Disabled");
+    });
+});
+
+app.on('browser-window-blur', function () {
+    globalShortcut.unregister('CommandOrControl+R');
+    globalShortcut.unregister('F5');
+});

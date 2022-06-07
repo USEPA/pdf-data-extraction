@@ -17,6 +17,8 @@ import ('bootstrap-select/dist/css/bootstrap-select.min.css');
 import "./style/custom.css"
 import 'datatables.net'
 import './lib/datatables/css/jquery.dataTables.min.css'
+import './lib/datatables/js/dataTables.buttons.min.js'
+import './lib/datatables/css/buttons.dataTables.min.css'
 require('bootstrap-select');
 require('@eastdesire/jscolor');
 
@@ -60,6 +62,28 @@ function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighl
           // data: data,
           paging: false,
           order: [[1, 'asc']],
+          columnDefs: [
+            {
+                target: 4,
+                visible: false,
+                searchable: false,
+            }
+        ],
+        dom: 'Bf',
+        buttons: [
+            {
+                text: 'Delete row',
+                action: function ( e, dt, node, config ) {
+                  if(t.row('.selected').data()){
+                    removeHighlight(t.row('.selected').data()[4]);
+                    t.row('.selected').remove().draw( false );
+
+                  }else{
+                    alert('No rows selected');
+                  }
+                }
+            }
+        ]
         });
         jQuery('#table_id tbody').on( 'click', 'tr', function () {
           if ( jQuery(this).hasClass('selected') ) {
@@ -71,13 +95,13 @@ function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighl
           }
       } );
 
-      jQuery('#button').click( function () {
-        if(t.row('.selected').data()){
-          removeHighlight(t.row('.selected').data()[4]);
-          t.row('.selected').remove().draw( false );
-
-        }
-      } );
+      // jQuery('#button').click( function () {
+      //   if(t.row('.selected').data()){
+      //     removeHighlight(t.row('.selected').data()[4]);
+      //     t.row('.selected').remove().draw( false );
+      //
+      //   }
+      // } );
     }
 
 
@@ -188,16 +212,14 @@ t.clear();
 
 
 <div className="accordion" id="accordionExample">
-<button id="button">Delete selected row</button>
 {
   <table id="table_id" class="display">
     <thead>
         <tr>
             <th>Text</th>
             <th>Type</th>
-            <th>User</th>
             <th>Page</th>
-            <th>ID</th>
+            <th>User</th>
         </tr>
     </thead>
 
@@ -211,7 +233,7 @@ t.clear();
                   updateHash(message);
                 }}>
       <div class="accordion-body">
-      {updateTable(t, message.content.text, message.comment.text,`${message.userName}`, message.position.pageNumber, message.id )}
+      {updateTable(t, message.content.text, message.comment.text, message.position.pageNumber,`${message.userName}`, message.id )}
       </div>
     </div>
     ))}
