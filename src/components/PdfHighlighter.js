@@ -193,9 +193,9 @@ class PdfHighlighter extends PureComponent {
       return;
     }
 
-    if (prevProps.highlights !== this.props.highlights) {
+    //if (prevProps.highlights !== this.props.highlights) {
       this.renderHighlights(this.props);
-    }
+    //}
   }
 
   init() {

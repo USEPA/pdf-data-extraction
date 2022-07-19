@@ -44,10 +44,14 @@ body {
   border-bottom: 1px solid rgb(119, 119, 119);
 }
 
-.hidden {position:absolute;visibility:hidden;opacity:0;}
+.hidden {
+  position:absolute;
+  visibility:hidden;
+  opacity:0;
+}
+
 input[type=checkbox] + label {
   color: black;
-  /* font-style: italic; */
   margin-left: 10px;
   margin-right: 10px;
 }

@@ -444,7 +444,7 @@ const openAnnotFile = exports.openAnnotFile = (targetWindow, file) => {
   highlights.highlights = [];
   highlights.relationships = [];
   // const fullpath = path.join(path(file) )
-  console.log(path);
+  //console.log(path);
 
   //const exists = fs.existsSync(fullpath);
   //if (exists) {
@@ -454,6 +454,7 @@ const openAnnotFile = exports.openAnnotFile = (targetWindow, file) => {
   try {
     highlights = JSON.parse(content);
   } catch (err) {
+    alert("Error: file format invalid");
     //console.log(err);
   }
   //console.log(JSON.stringify(highlights));

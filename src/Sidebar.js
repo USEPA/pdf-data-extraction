@@ -53,7 +53,7 @@ function updateTable(t, text,type,userName,page, id){
 
 var t;
 
-function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighlight, addRelationship, openSchema, annoEdit, addRelationshipToAnno, addRelationshipType }: Props) {
+function Sidebar({ highlights, tags, relationships, resetHighlights, removeHighlight, addRelationship, openSchema, annoEdit, annoEditType, addRelationshipToAnno, addRelationshipType }: Props) {
   const groupedByDate = {};
     if ( jQuery.fn.dataTable.isDataTable( '#table_id' )){
 
@@ -261,12 +261,18 @@ t.clear();
                   {tags.annotation_types.map((tag, index) => (
 
                         <tr key={index} id={tag.name + "modaltr" + index}>
-                        <th><p name="tagname" contentEditable = "true">{tag.name}</p></th>
-                        <th><input class="jscolor" name="tagcolor" data-jscolor="{}" defaultValue={tag.color}></input></th>
+                        <th><p id={"p-" + tag.id} name="tagname" contentEditable = "true">{tag.name}</p></th>
+                        <th><input class="jscolor" id={"tagcolor"+index} name={"tagcolor"} data-jscolor="{}" defaultValue={tag.color}></input></th>
                         <th><button onClick={function(){if(confirm("Remove " + tag.name + "?")){
-                            tags.annotation_types.splice(index, 1);
-                            openSchema(tags);
+                            let tempdtags = tags;
+                            tempdtags.annotation_types.splice(index, 1);
+                            tempdtags.annotation_types.forEach((e, cpindex) => {
+
+                              document.getElementById('tagcolor'+cpindex).jscolor.fromString(e.color);
+                              });
+                            openSchema(tempdtags);
                             jscolor.install();
+
 
                           }}}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -287,6 +293,7 @@ t.clear();
                 t.color = "#FBFF17";
                 tempt.annotation_types.push(t);
                 openSchema(tempt);
+                jscolor.install();
 
               }}>
                 Add Entity Type
@@ -309,11 +316,25 @@ t.clear();
                         temp.name = tagNameInputs[index].textContent;
                         temp.color = tagColorInputs[index].value;
                         tempTags.annotation_types[index] = temp;
+                        //check for edited tag names
+
+                        if(tagNameInputs[index].id != ("p-" + temp.name))
+                        {
+
+                          highlights.forEach(htemp => {
+
+                            if(("p-" + htemp.comment.text) == tagNameInputs[index].id)
+                            {
+                              annoEditType(htemp.id, temp.name);
+                            }
+                          })
+                        }
+
                     }
                     tags = tempTags;
+
                     openSchema(tempTags);
                     jscolor.install();
-
                   } }>Save</button>
               </div>
             </div>

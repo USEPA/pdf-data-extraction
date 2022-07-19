@@ -41,9 +41,9 @@ html
 }
 
 .textLayer .highlight.selected {
-  background-color: rgb(166, 228, 166);
+  background-color: rgb(255, 255, 0);
 }
 
 .textLayer .highlight {
-  background-color: rgb(120, 100, 200);
+  background-color: rgb(255, 255, 200);
 }

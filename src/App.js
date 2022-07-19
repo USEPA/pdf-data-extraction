@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 
 import URLSearchParams from "url-search-params";
@@ -166,64 +166,40 @@ function zoomPagesOut(){
   window.PdfViewer.viewer.currentScale -= .5;
 }
 
-function findNextWord(){
+const Checkbox = ({ label, value, onChange }) => {
+  return (
+      <label style={{color:"black"}}>
+      {label}
+      <input type="checkbox" checked={value} onChange={onChange} />
+      </label>
+    );
+};
 
-  var highlight_all = false;
-  var match_case = false;
-  var whole_word = false;
+function findNextWord(state){
 
-  if(document.getElementById("findHighlightAll").checked){
-    highlight_all = true;
-  }
+  // const findState = window.PdfViewer.pdfFindController.state;
 
-  if(document.getElementById("findMatchCase").checked){
-    match_case = true;
-  }
-
-  if(document.getElementById("findWholeWord").checked){
-    whole_word = true;
-  }
-
-  window.PdfViewer.viewer.findController.executeCommand("findagain", {
+  window.PdfViewer.pdfFindController.executeCommand("findagain", {
       query: document.getElementById('findInput').value,
       phraseSearch: true,
-      caseSensitive: match_case,
-      entireWord: whole_word,
-      highlightAll: highlight_all,
+      caseSensitive: state.match_case_checked,
+      entireWord: state.whole_word_checked,
+      highlightAll: state.highlight_all_checked,
       // findPrevious: cmd === 5 || cmd === 12
 
     });
-  console.log(window.PdfViewer.viewer.findController._matchesCountTotal);
-  const findState = window.PdfViewer.viewer.findController.state;
-  console.log(findState);
+  // console.log(window.PdfViewer.pdfFindController._matchesCountTotal);
+
 
 }
 
-function findLastWord(){
-  var highlight_all = false;
-  var match_case = false;
-  var whole_word = false;
-
-  if(document.getElementById("findHighlightAll").checked){
-    highlight_all = true;
-  }
-
-  if(document.getElementById("findMatchCase").checked){
-    match_case = true;
-  }
-
-  if(document.getElementById("findWholeWord").checked){
-    whole_word = true;
-  }
-
+function findLastWord(state){
   window.PdfViewer.viewer.findController.executeCommand("findagain", {
       query: document.getElementById('findInput').value,
-      // phraseSearch: true,
-      // caseSensitive: false,
-      // entireWord: true,
-      caseSensitive: match_case,
-      entireWord: whole_word,
-      highlightAll: highlight_all,
+      phraseSearch: true,
+      caseSensitive: state.match_case_checked,
+      entireWord: state.whole_word_checked,
+      highlightAll: state.highlight_all_checked,
       findPrevious: true
 
     });
@@ -289,7 +265,10 @@ class App extends Component<Props, State> {
     data: '',
     text: '',
     tags: defaultTags,
-    relationships: []
+    relationships: [],
+    highlight_all_checked: false,
+    whole_word_checked: false,
+    match_case_checked: false
   };
 
   state: State;
@@ -340,27 +319,37 @@ class App extends Component<Props, State> {
             }
           })
       })
+      /*
    defaultTags.annotation_types.forEach(tag => {
         let tagID = `.Highlight__` + tag.name;
         //document.getElementById(tagID).style.color=tag.color;
         $(tagID).css({"background": tag.color})
         $(tagID).css({"position": "absolute"});
-      });
+      });*/
   };
 
   openSchema = (data) => {
     //alert(JSON.stringify(data));
     var tempHighlights = this.state.highlights;
     const currentTags = data;
-    tempHighlights.forEach(hlight => {
+
+
+    tempHighlights.forEach((hlight,index) => {
+        let found = false;
         data.annotation_types.forEach(tag => {
+
             if(tag.name == hlight.comment.text){
+              found = true;
               hlight.position.rects.forEach(rect => {
                   rect.background = tag.color;
                 })
             }
           })
+          if(!found) tempHighlights.splice(index,1);
       })
+
+
+
     this.setState({
       highlights: tempHighlights,
       url: this.state.url,
@@ -371,6 +360,8 @@ class App extends Component<Props, State> {
     });
     delay(.1).then(() => jscolor.install());
 
+    //alert('something');
+    //delay(.1).then(() => tags.annotation_types.forEach(e => document.getElementById('tagcolor'+e.name).jscolor.fromString(e.color)));
 
   };
 
@@ -633,6 +624,24 @@ class App extends Component<Props, State> {
     });
   }
 
+  annoEditType = (id: string, newTag: string) => {
+    var editedh = this.state.highlights;
+    var index = editedh.map(function(e) { return e.id; }).indexOf(id);
+
+    if(index > -1)
+    {
+      editedh[index].comment.text = newTag;
+    }
+
+    this.setState({
+      highlights: editedh,
+      url : this.state.url,
+      data: this.state.data,
+      tags: this.state.tags,
+      relationships: this.state.relationships
+    });
+  }
+
   annoEdit = (id: string, comment: string) => {
 
     if(comment != "")
@@ -718,7 +727,25 @@ class App extends Component<Props, State> {
     const app = electron.app;
     const path = require('path');
     const fs = window.require('fs');
+    const { highlight_all_checked } = this.state;
+    const { whole_word_checked } = this.state;
+    const { match_case_checked } = this.state;
 
+    // const [checked, setChecked] = useState(false);
+    const highlight_all = () => {
+      window.PdfViewer.pdfFindController._dirtyMatch = true;
+      this.setState({ highlight_all_checked: !this.state.highlight_all_checked })
+    };
+
+    const whole_word = () => {
+      window.PdfViewer.pdfFindController._dirtyMatch = true;
+      this.setState({ whole_word_checked: !this.state.whole_word_checked })
+    };
+
+    const match_case = () => {
+      window.PdfViewer.pdfFindController._dirtyMatch = true;
+      this.setState({ match_case_checked: !this.state.match_case_checked })
+    };
 
     return (
 
@@ -733,6 +760,7 @@ class App extends Component<Props, State> {
           addRelationship={this.addRelationship}
           openSchema={this.openSchema}
           annoEdit={this.annoEdit}
+          annoEditType={this.annoEditType}
           addRelationshipToAnno={this.addRelationshipToAnno}
           addRelationshipType={this.addRelationshipType}
         />
@@ -814,22 +842,22 @@ class App extends Component<Props, State> {
       </div>
 
         <input id="findInput" className="toolbarField" title="Find" placeholder="Find in document…" tabIndex={91} data-l10n-id="find_input" style={{backgroundImage: 'url("data:image/png', backgroundRepeat: 'no-repeat', backgroundAttachment: 'scroll', backgroundSize: '16px 18px', backgroundPosition: '98% 50%', cursor: 'auto'}} data-status />
-          <button onClick={(e) => findLastWord()} id="findPrevious" className="toolbarButton findPrevious" title="Find the previous occurrence of the phrase" tabIndex={92} data-l10n-id="find_previous">
+          <button onClick={(e) => findLastWord(this.state)} id="findPrevious" className="toolbarButton findPrevious" title="Find the previous occurrence of the phrase" tabIndex={92} data-l10n-id="find_previous">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M13 11a1 1 0 0 1-.707-.293L8 6.414l-4.293 4.293a1 1 0 0 1-1.414-1.414l5-5a1 1 0 0 1 1.414 0l5 5A1 1 0 0 1 13 11z"></path></svg>
             <span data-l10n-id="find_previous_label"></span>
           </button>
-          <button onClick={(e) => findNextWord()} id="findNext" className="toolbarButton findNext" title="Find the next occurrence of the phrase" tabIndex={93} data-l10n-id="find_next">
+          <button onClick={(e) => findNextWord(this.state)} id="findNext" className="toolbarButton findNext" title="Find the next occurrence of the phrase" tabIndex={93} data-l10n-id="find_next">
             <span data-l10n-id="find_next_label"></span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M8 12a1 1 0 0 1-.707-.293l-5-5a1 1 0 0 1 1.414-1.414L8 9.586l4.293-4.293a1 1 0 0 1 1.414 1.414l-5 5A1 1 0 0 1 8 12z"></path></svg>
           </button>
 
-            <input type="checkbox" id="findHighlightAll" class="hidden" tabindex="94"/>
-            <label for="findHighlightAll" class="toolbarLabel" data-l10n-id="find_highlight">Highlight all</label>
-            <input type="checkbox" id="findMatchCase" class="hidden" tabindex="95"/>
-            <label for="findMatchCase" class="toolbarLabel" data-l10n-id="find_match_case_label">Match case</label>
-            <input type="checkbox" id="findWholeWord" class="hidden" tabindex="95"/>
-            <label for="findWholeWord" class="toolbarLabel" data-l10n-id="find_whole_word_label">Whole words</label>
-            <label for="entities">Choose an entity:</label>
+
+            <Checkbox label="Highlight all " value={highlight_all_checked} onChange={highlight_all} />&nbsp;
+            <Checkbox label="Match case " value={match_case_checked} onChange={match_case} />&nbsp;
+            <Checkbox label="Whole words " value={whole_word_checked} onChange={whole_word} />
+            <br/>
+
+            <label for="entities" style={{color:"black"}}>Choose an entity:</label>&nbsp;
 
             <select name="entities" id="entities">
               <option value="volvo"></option>
@@ -888,7 +916,31 @@ class App extends Component<Props, State> {
 
                   });
                   ipcRenderer.on('annot-opened', (event, file, content, highlights) => {
-                    this.openAnnot(highlights);
+
+                      const pdfData = this.state.data;
+
+                      pdfjs.getDocument({
+                        data: pdfData,
+                        eventBusDispatchToDOM: true
+                      }).promise.then(function(pdfD){
+                          getT(pdfD).then(function(ptext){
+                            if (confirm('Loading annotation file will override all current annotations, are you sure?')) {
+                              // Save it!
+                              if(highlights.text == ptext)
+                              {
+                                this.openAnnot(highlights);
+                              }
+                              else
+                              {
+                                alert("Error: Cannot load annotation file - PDF file mismatch");
+                              }
+                            } else {
+                              // Do nothing!
+                              console.log('Annotations not loaded.');
+                              return;
+                            }
+                          }.bind(this))
+                  }.bind(this))
 
                     // console.log(highlights.highlights);
                     // this.state.highlights.push(highlights.highlights[0]);
