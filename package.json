@@ -1,34 +1,50 @@
 {
-  "name": "pdfnottron",
-  "productName": "ElectronReact",
-  "version": "1.2.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "PEAT",
+  "productName": "PEAT",
+  "version": "1.1.1",
+  "description": "PDF Entity Annotation Tool",
   "private": true,
   "devDependencies": {
     "electron": "^9.1.2",
-    "electron-builder": "^22.8.0",
+    "electron-builder": "^22.11.7",
     "foreman": "^2.0.0",
     "jest-puppeteer": "^4.4.0",
     "puppeteer": "^2.0.0",
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@eastdesire/jscolor": "^2.4.5",
+    "@popperjs/core": "^2.9.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "bootstrap": "^4.6.0",
+    "bootstrap-select": "^1.13.18",
+    "colorpicker": "^2.0.0",
+    "datatables": "^1.10.18",
+    "datatables.net": "^1.11.4",
+    "datatables.net-dt": "^1.11.4",
+    "http2": "^3.3.7",
     "jquery": "^3.6.0",
+    "jscolor": "^0.3.0",
     "lodash": "^4.17.10",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
     "pdfjs-dist": "2.2.228",
+    "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-pointable": "^1.1.1",
     "react-rnd": "^7.1.5",
     "react-scripts": "*",
-    "url-search-params": "^1.1.0"
+    "split.js": "^1.6.4",
+    "url-search-params": "^1.1.0",
+    "webpack-dev-middleware": "^5.3.3"
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "PANDHA",
     "appId": "org.develar.ElectronReact",
     "files": [
       "dist/**/*",
@@ -49,9 +65,9 @@
       ]
     },
     "win": {
+      "icon": "public/icon.png",
       "target": [
-        "nsis",
-        "msi"
+        "nsis"
       ]
     },
     "linux": {

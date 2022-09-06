@@ -17,15 +17,15 @@ class Highlight extends Component {
     } = position;
     return React.createElement("div", {
       className: `Highlight ${isScrolledTo ? "Highlight--scrolledTo" : ""}`
-    }, comment ? React.createElement("div", {
-      className: "Highlight__emoji",
-      style: {
-        left: 20,
-        top: boundingRect.top
-      }
-    }, comment.emoji) : null, React.createElement("div", {
-      className: `Highlight__parts`
-    },
+    }, //comment ? React.createElement("div", {
+    //  className: "Highlight__relationship",
+    //  style: {
+    //    left: 20,
+    //    top: boundingRect.top
+    //  }
+    //}, comment.relationship) : null, React.createElement("div", {
+    //  className: `Highlight__parts`
+    //},
 
      rects.map((rect, index) => React.createElement("div", {
       onMouseOver: onMouseOver,
@@ -36,7 +36,7 @@ class Highlight extends Component {
       className: `Highlight__part`,
       //background: "black",
       id: comment.text}
-    ))));
+    )));
   }
 
 }

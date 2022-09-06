@@ -16,7 +16,7 @@
 html
   body
   .textLayer
-  > div:not(.PdfHighlighter__highlight-layer):not(.Highlight):not(.Highlight-emoji) {
+  > div:not(.PdfHighlighter__highlight-layer):not(.Highlight):not(.Highlight-relationship) {
   opacity: 1;
   mix-blend-mode: multiply;
 }
@@ -38,4 +38,12 @@ html
 /* Microsoft Edge Browser 12+ (All) - @supports method */
 @supports (-ms-ime-align:auto) {
   .textLayer {opacity: 0.5 }
+}
+
+.textLayer .highlight.selected {
+  background-color: rgb(255, 255, 0);
+}
+
+.textLayer .highlight {
+  background-color: rgb(255, 255, 200);
 }
